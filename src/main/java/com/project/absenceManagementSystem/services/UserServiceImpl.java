@@ -21,6 +21,7 @@ import com.project.absenceManagementSystem.entities.Role;
 import com.project.absenceManagementSystem.entities.Student;
 import com.project.absenceManagementSystem.entities.Teacher;
 import com.project.absenceManagementSystem.entities.User;
+import com.project.absenceManagementSystem.repositories.AccountRepository;
 import com.project.absenceManagementSystem.repositories.UserRepository;
 
 
@@ -30,6 +31,9 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private AccountRepository accountRepository;
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
@@ -69,6 +73,9 @@ public class UserServiceImpl implements UserService{
 		User user = userRepository.findByEmail(username);
 		if(user == null) {
 			throw new UsernameNotFoundException("Invalid username or password.");
+		}else
+		if(accountRepository.getOne(user.getAccount().getId()) == null) {
+			throw new UsernameNotFoundException("Ce compte n'existe pas");
 		}
 		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getAccount().getPassword(),  mapRolesToAuthorities(user.getRoles()));		
 	}
