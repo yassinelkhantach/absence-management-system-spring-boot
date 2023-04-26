@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,7 +22,6 @@ import com.project.absenceManagementSystem.entities.Teacher;
 import com.project.absenceManagementSystem.entities.User;
 import com.project.absenceManagementSystem.repositories.AccountRepository;
 import com.project.absenceManagementSystem.repositories.UserRepository;
-
 
 
 @Service
