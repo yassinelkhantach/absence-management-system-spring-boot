@@ -1,8 +1,6 @@
 package com.project.absenceManagementSystem.entities;
 
 import java.util.Date;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,13 +8,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "account")
-@Data
-@NoArgsConstructor
 public class Account {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -27,9 +21,13 @@ public class Account {
 	private Boolean locked;
 	private Date createdAt;
 	private Date deletedAt;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+	
+	public Account() {
+		
+	}
 	
 	public Account(String login, String password, String role, Boolean enabled, Boolean locked, Date createdAt,
 			Date deletedAt, User user) {

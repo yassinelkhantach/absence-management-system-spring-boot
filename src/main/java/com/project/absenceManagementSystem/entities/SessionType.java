@@ -7,47 +7,51 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "elements")
-public class Element {
+@Table(name = "sessionTypes")
+public class SessionType {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String label;
-	@ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "module_id", referencedColumnName = "id")
-	private Module module;
-	@OneToMany(cascade = CascadeType.ALL,mappedBy = "element")
+	@OneToMany(mappedBy = "sessionType",cascade = CascadeType.ALL)
 	private List<Absence> absences;
 	
-	public Element(String label, Module module) {
+	
+	public SessionType(String label) {
 		super();
 		this.label = label;
-		this.module = module;
 	}
-	 
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getLabel() {
 		return label;
 	}
+
 	public void setLabel(String label) {
 		this.label = label;
 	}
-	public Module getModule() {
-		return module;
+
+	public List<Absence> getAbsences() {
+		return absences;
 	}
-	public void setModule(Module module) {
-		this.module = module;
+
+	public void setAbsences(List<Absence> absences) {
+		this.absences = absences;
 	}
 	
-
+	
+	
+	
+	
+	
 }

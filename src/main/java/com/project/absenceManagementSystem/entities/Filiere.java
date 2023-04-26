@@ -22,6 +22,8 @@ public class Filiere {
 	private Date accreditationEnd;
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "filiere")
 	private List<Level> levels;
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "filiere")
+	private List<Coordination> coordinations;
 	
 	
 	

@@ -31,6 +31,8 @@ public class Level {
     private Filiere filiere;
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "level")
 	private List<Module> modules;
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "level")
+	private List<Registration> registrations;
 
 	
 	
@@ -68,5 +70,15 @@ public class Level {
 	public void setModules(List<Module> modules) {
 		this.modules = modules;
 	}
+
+	public List<Registration> getRegistrations() {
+		return registrations;
+	}
+
+	public void setRegistrations(List<Registration> registrations) {
+		this.registrations = registrations;
+	}
+	
+	
 	
 }
