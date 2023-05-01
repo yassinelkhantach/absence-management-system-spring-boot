@@ -1,129 +1,169 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns:th="http://www.thymeleaf.org" 
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
 <head>
-<meta charset="ISO-8859-1">
-<title>REGISTRATION</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	
+    <meta charset="utf-8">
+    <title>REGISTRATION</title>
+
+    <link rel="shortcut icon" th:href="@{/assets/img/favicon.png}">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/assets/plugins/bootstrap/css/bootstrap.min.css}">
+
+    <link rel="stylesheet" th:href="@{/assets/plugins/feather/feather.css}">
+
+    <link rel="stylesheet" th:href="@{/assets/plugins/icons/flags/flags.css}">
+
+    <link rel="stylesheet" th:href="@{/assets/plugins/fontawesome/css/fontawesome.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/plugins/fontawesome/css/all.min.css}">
+
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
 </head>
+
 <body>
 
-	<!-- create navigation bar ( header) -->
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#" th:href="@{/}">Registration and
-					Login Module</a>
-			</div>
-		</div>
-	</nav>
 
-<br>
-<br>
-	<!-- Create HTML registration form -->
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
+    <div class="main-wrapper login-body">
 
-				<!-- success message -->
-				<div th:if="${param.success}">
-					<div class="alert alert-info">You've successfully registered
-						to our awesome app!</div>
-				</div>
+        <div class="login-wrapper">
+            <div class="container">
+                <div class="loginbox">
+                    <div class="login-left">
+                        <img class="img-fluid" src="assets/img/login.png" alt="Logo">
+                    </div>
+                    <div class="login-right">
+                        <div class="login-right-wrap">
+                            <h1>Sign Up</h1>
+                            <p class="account-subtitle">Enter details to create your account</p>
 
-				<h1>Registration</h1>
+                            <form th:action="@{/registration}" method="post" th:object="${user}">
+                                <div class="form-group">
+                                    <label for="firstName">First name <span class="login-danger">*</span></label>
+                                    <input class="form-control" type="text" id="firstName" th:field="*{firstName}"
+                                        required autofocus="autofocus">
+                                    <span class="profile-views"><i class="fas fa-user-circle"></i></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last name <span class="login-danger">*</span></label>
+                                    <input class="form-control" type="text" id="lastName" th:field="*{lastName}"
+                                        required>
+                                    <span class="profile-views"><i class="fas fa-user-circle"></i></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="firstNameAr">First name arabic <span class="login-danger">*</span></label>
+                                    <input class="form-control" type="text" id="firstNameAr" th:field="*{firstNameAr}"
+                                        required autofocus="autofocus">
+                                    <span class="profile-views"><i class="fas fa-user-circle"></i></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastNameAr">Last name arabic <span class="login-danger">*</span></label>
+                                    <input class="form-control" type="text" id="lastNameAr" th:field="*{lastNameAr}"
+                                        required>
+                                    <span class="profile-views"><i class="fas fa-user-circle"></i></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone <span class="login-danger">*</span></label>
+                                    <input class="form-control" type="text" id="phone" th:field="*{phone}">
+                                    <span class="profile-views"><i class="fas fa-phone"></i></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email <span class="login-danger">*</span></label>
+                                    <input class="form-control" type="text" id="email" th:field="*{email}" />
+                                    <span class="profile-views"><i class="fas fa-envelope"></i></span>
+                                </div>
 
-				<form th:action="@{/registration}" method="post" th:object="${user}">
-					<div class="form-group">
-						<label class="control-label" for="firstName"> First Name </label>
-						<input id="firstName" class="form-control" th:field="*{firstName}"
-							required autofocus="autofocus" />
-					</div>
+                                <div class="form-group">
+                                    <label for="role">Rôle <span class="login-danger">*</span></label>
+                                    <select class="form-select" aria-label=".form-select-lg example"
+                                        id="role" th:field="*{role}">
+                                        <option th:value="'Choisir'" th:text="'Veuillez choisir votre rôle'" th:selected>
+                                        </option>
+                                        <option th:value="'CadreAdministrator'" th:text="'Cadre administrateur'">
+                                        </option>
+                                        <option th:value="'Teacher'" th:text="'Professeur'"></option>
+                                        <option th:value="'Student'" th:text="'Etudiant'"></option>
+                                    </select>
+                                    <span class="profile-views"><i class="fas fa-user"></i></span>
+                                </div>
 
-					<div class="form-group">
-						<label class="control-label" for="lastName"> Last Name </label> <input
-							id="lastName" class="form-control" th:field="*{lastName}"
-							required autofocus="autofocus" />
-					</div>
-					
-					<div class="form-group">
-						<label class="control-label" for="firstNameAr"> First Name Arabic </label> <input
-							id="firstNameAr" class="form-control" th:field="*{firstNameAr}"
-							required autofocus="autofocus" />
-					</div>
-					
-					<div class="form-group">
-						<label class="control-label" for="lastNameAr"> First Name Arabic </label> <input
-							id="lastNameAr" class="form-control" th:field="*{lastNameAr}"
-							required autofocus="autofocus" />
-					</div>
-					
-					<div class="form-group">
-						<label class="control-label" for="phone"> Phone </label> <input
-							id="phone" class="form-control" th:field="*{phone}" required
-							autofocus="autofocus" />
-					</div>
 
-					<div class="form-group">
-						<label class="control-label" for="email"> Email </label> <input
-							id="email" class="form-control" th:field="*{email}" required
-							autofocus="autofocus" />
-					</div>
-					
-					<div class="form-group">
-						<select class="form-select form-select-lg mb-3" 
-						        aria-label=".form-select-lg example" id="role" th:field="*{role}">
-						  <option th:value="'Choisir'" th:text="'Choisir votre role'" th:selected></option>
-						  <option th:value="'CadreAdministrator'" th:text="'Cadre administrateur'"></option>
-						  <option th:value="'Teacher'" th:text="'Professeur'"></option>
-						  <option th:value="'Student'" th:text="'Etudiant'"></option>
-						 
-						</select>
-					</div>
-					
-					<section id="fields">
-						<div class="form-group cne">
-				           <label class="control-label" for="cne">CNE</label>
-			               <input id="cne" class="form-control" type="text" name="cne" th:field="*{cne}" />
-					    </div>
-					    <div class="form-group cin">
-					       <label class="control-label" for="cin">CIN</label>
-					       <input id="cin" class="form-control" type="text" name="cin" th:field="*{cin}" />
-					    </div>
-					    <div class="form-group birthDate">
-					      <label class="control-label" for="birthDate">Birth Date</label>
-				          <input id="birthDate" class="form-control" type="date" name="birthdate" th:field="*{birthdate}" />
-			            </div>
-			            <div class="form-group grade" >
-					      <label class="control-label" for="grade">Grade</label>
-					      <input id="grade" class="form-control" type="text" name="grade" th:field="*{grade}" />
-					    </div>
-					</section>
-					
+                                <section id="fields">
+                                    <div class="form-group cne">
+                                        <label class="control-label" for="cne">CNE <span class="login-danger">*</span></label>
+                                        <input id="cne" class="form-control" type="text" name="cne" th:field="*{cne}" />
+                                    </div>
+                                    <div class="form-group cin">
+                                        <label class="control-label" for="cin">CIN <span class="login-danger">*</span></label>
+                                        <input id="cin" class="form-control" type="text" name="cin" th:field="*{cin}" />
+                                    </div>
+                                    <div class="form-group birthDate">
+                                        <label class="control-label" for="birthDate">Birth Date <span class="login-danger">*</span></label>
+                                        <input id="birthDate" class="form-control" type="date" name="birthdate"
+                                            th:field="*{birthdate}" />
+                                    </div>
+                                    <div class="form-group grade">
+                                        <label class="control-label" for="grade">Grade <span class="login-danger">*</span></label>
+                                        <input id="grade" class="form-control" type="text" name="grade"
+                                            th:field="*{grade}" />
+                                    </div>
+                                </section>
 
-					<div class="form-group">
-						<label class="control-label" for="password"> Password </label> <input
-							id="password" class="form-control" type="password"
-							th:field="*{password}" required autofocus="autofocus" />
-					</div>
+                                <div class="form-group">
+                                    <label>Password <span class="login-danger">*</span></label>
+                                    <input class="form-control pass-input" type="password" id="password"
+                                        th:field="*{password}">
+                                    <span class="profile-views feather-eye toggle-password"></span>
+                                </div>
+                                
+                                 <div th:if="${param.success}">
+						            <div class="alert alert-info">You've successfully registered !</div>
+						        </div>
+						        
+								<div th:if="${param.error}">
+                                    <div class="alert alert-danger">An error occured ! try again</div>
+                                </div>	
+                                					        
+                                <div class=" dont-have">Already Registered? <a href="/" th:href="@{/login}">Login</a>
+                                </div>
+                                <div class="form-group mb-0">
+                                    <button class="btn btn-primary btn-block" type="submit">Register</button>
+                                </div>
+                            </form>
 
-					<div class="form-group">
-						<button type="submit" class="btn btn-success">Register</button>
-						<span>Already registered? <a href="/" th:href="@{/login}">Login
-								here</a></span>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<script type="text/javascript" th:src="@{/js/script.js}"></script>
+                            <div class="login-or">
+                                <span class="or-line"></span>
+                                <span class="span-or">or</span>
+                            </div>
+
+                            <div class="social-login">
+                                <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script th:src="@{/assets/js/jquery-3.6.0.min.js}"></script>
+
+    <script th:src="@{/assets/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+    <script th:src="@{/assets/js/feather.min.js}"></script>
+
+    <script th:src="@{/assets/js/script.js}"></script>
+    
+    <script th:src="@{/js/script.js}"></script>
+    
 </body>
+
 </html>

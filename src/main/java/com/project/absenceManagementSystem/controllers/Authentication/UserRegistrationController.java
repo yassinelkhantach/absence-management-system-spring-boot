@@ -1,6 +1,7 @@
-package com.project.absenceManagementSystem.controllers;
+package com.project.absenceManagementSystem.controllers.Authentication;
 
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,7 +29,10 @@ public class UserRegistrationController {
     }
 	
 	@GetMapping
-	public String showRegistrationForm() {
+	public String showRegistrationForm(Authentication authentication) {
+		if (authentication != null && authentication.isAuthenticated()) {
+			return "redirect:/";
+		}
 		return "registration";
 	}
 	

@@ -18,10 +18,11 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 
 @Entity
-@Table(name = "users")
+@Table(name = "users",uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "user_type",discriminatorType = DiscriminatorType.STRING)
 public class User {

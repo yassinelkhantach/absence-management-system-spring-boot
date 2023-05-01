@@ -4,6 +4,10 @@ package com.project.absenceManagementSystem.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,17 +16,21 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import com.project.absenceManagementSystem.services.UserService;
 
+import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
+
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig  {
 	
 	private static final String[] AUTH_WHITELIST = {
-			"/registration**",
-            "/js/**",
+            "/assets/**",
+			"/js/**",
             "/bootstrap/**",
             "/css/**",
-            "/img/**"
+            "/img/**",
+            "/login**",
+			"/registration**"
 	};
 
 	@Autowired
@@ -47,8 +55,11 @@ public class WebSecurityConfig  {
 	        .authorizeHttpRequests((requests) -> {
 	            try {
 	                requests
-	                    .requestMatchers("/login**","/registration**").anonymous()
 	                    .requestMatchers(AUTH_WHITELIST).permitAll()
+	                    .requestMatchers("/student/**").hasRole("STUDENT")
+	                    .requestMatchers("/teacher/**").hasRole("TEACHER")
+	                    .requestMatchers("/cadre-administrator/**").hasRole("CADRE_ADMINISTRATOR")
+	                    .requestMatchers("/admin/**").hasRole("ADMINISTRATOR")
 	                    .anyRequest().authenticated();
 	            } catch (Exception e) {
 	                e.printStackTrace();
@@ -56,7 +67,9 @@ public class WebSecurityConfig  {
 	        })
 	        .formLogin()
 	            .loginPage("/login")
-	            .and()
+            .successHandler(new CustomAuthenticationSuccessHandler())
+            .failureHandler(authenticationFailureHandler()) // configure the authentication failure handler
+	        .and()
 	        .logout()
 	            .invalidateHttpSession(true)
 	            .clearAuthentication(true)
@@ -68,6 +81,37 @@ public class WebSecurityConfig  {
 	 
 	    return http.build();
 	}
+	
+	@Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        roleHierarchy.setHierarchy("ROLE_ADMINISTRATOR > ROLE_STUDENT\n"
+            + "ROLE_ADMINISTRATOR > ROLE_TEACHER\n"
+            + "ROLE_ADMINISTRATOR > ROLE_CADRE_ADMINISTRATOR");
+        return roleHierarchy;
+    }
 
+    @Bean
+    public DefaultMethodSecurityExpressionHandler expressionHandler() {
+        DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
+        expressionHandler.setRoleHierarchy(roleHierarchy());
+        return expressionHandler;
+    }
+    
+    @Bean
+    public CustomAuthenticationFailureHandler authenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
+    }
+
+
+    @Bean
+    public MethodSecurityExpressionHandler createExpressionHandler() {
+        return expressionHandler();
+    }
+	
+	@Bean
+	public LayoutDialect layoutDialect() {
+	    return new LayoutDialect();
+	}
 
 }

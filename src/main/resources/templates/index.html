@@ -1,44 +1,21 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns:th="http://www.thymeleaf.org" 
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="layouts/main">
 <head>
-<meta charset="ISO-8859-1">
-<title>HOME</title>
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
+	<title>AMS ENSAH | Dashboard</title>
 </head>
 <body>
-	<!-- create navigation bar ( header) -->
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#" th:href="@{/}">Registration and
-					Login Module</a>
-			</div>
-			<div id="navbar" class="collapse navbar-collapse">
-				<ul class="nav navbar-nav">
-					<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-
-	<br>
-	<br>
-
-	<div class="container">
-	
-    <h1 class="text-center" th:text=" ${'Bienvenue ' + user.firstName+' ' +user.lastName}"></h1>
-	<p class="text-center my-4" th:text="${'Vous etes '+user.getRole()}"></p>
+	<div layout:fragment="content" >
+		<h1 class="text-center" sec:authorize="hasRole('STUDENT')">Hello, you're a student</h1>
+		<h1 class="text-center" sec:authorize="hasRole('TEACHER')">Hello, you're a teacher</h1>
+		<h1 class="text-center" sec:authorize="hasRole('CADRE_ADMINISTRATOR')">Hello, you're a cadre administrator</h1>
+		<h1 class="text-center" sec:authorize="hasRole('ADMINISTRATOR')">Hello, you're a system administrator</h1>
 		
+	    <h4 class="mt-4" th:text=${#authentication}></h4>
+	    
+	    
 	</div>
 </body>
 </html>

@@ -20,6 +20,7 @@ import com.project.absenceManagementSystem.entities.Role;
 import com.project.absenceManagementSystem.entities.Student;
 import com.project.absenceManagementSystem.entities.Teacher;
 import com.project.absenceManagementSystem.entities.User;
+import com.project.absenceManagementSystem.exceptions.DuplicateEmailException;
 import com.project.absenceManagementSystem.repositories.AccountRepository;
 import com.project.absenceManagementSystem.repositories.UserRepository;
 
@@ -38,6 +39,9 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public User save(UserRegistrationDto registrationDto) {
+		if (emailExist(registrationDto.getEmail())) {
+            throw new DuplicateEmailException("The email address already exists.");
+        }
 		Account account = new Account(registrationDto.getEmail(), passwordEncoder.encode(registrationDto.getPassword()), registrationDto.getRole(), false, true, new Date(), null, null);
 		User user = null;
 		if(account.getRole().toLowerCase().equals("student")) {
@@ -45,7 +49,7 @@ public class UserServiceImpl implements UserService{
 				user = new Student(registrationDto.getFirstName(),registrationDto.getLastName(),
 						registrationDto.getFirstNameAr(),registrationDto.getLastNameAr(),registrationDto.getPhone(),
 						registrationDto.getEmail(),null,registrationDto.getCin(),registrationDto.getCne(),
-						null,new SimpleDateFormat("yyyy-MM-dd").parse(registrationDto.getBirthdate()),Arrays.asList(new Role("étudiant")));
+						null,new SimpleDateFormat("yyyy-MM-dd").parse(registrationDto.getBirthdate()),Arrays.asList(new Role("ROLE_STUDENT")));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -53,12 +57,12 @@ public class UserServiceImpl implements UserService{
 		if(account.getRole().toLowerCase().equals("teacher")) {
 			user = new Teacher(registrationDto.getFirstName(),registrationDto.getLastName(),
 					registrationDto.getFirstNameAr(),registrationDto.getLastNameAr(),registrationDto.getPhone(),
-					registrationDto.getEmail(),null,registrationDto.getCin(),Arrays.asList(new Role("professeur")));
+					registrationDto.getEmail(),null,registrationDto.getCin(),Arrays.asList(new Role("ROLE_TEACHER")));
 		}else
 		if(account.getRole().toLowerCase().equals("cadreadministrator")){
 			user = new CadreAdministrator(registrationDto.getFirstName(),registrationDto.getLastName(),
 					registrationDto.getFirstNameAr(),registrationDto.getLastNameAr(),registrationDto.getPhone(),
-					registrationDto.getEmail(),null,registrationDto.getGrade(),Arrays.asList(new Role("cadre administrateur")));
+					registrationDto.getEmail(),null,registrationDto.getGrade(),Arrays.asList(new Role("ROLE_CADRE_ADMINISTRATOR")));
 		}
 		user.setAccount(account);
 		account.setUser(user);
@@ -82,5 +86,13 @@ public class UserServiceImpl implements UserService{
 	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
 	}
+	
+	private boolean emailExist(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            return true;
+        }
+        return false;
+    }
 
 }

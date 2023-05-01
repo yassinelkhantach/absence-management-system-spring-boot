@@ -77,7 +77,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
    
     
     
-    @Query("SELECT u FROM User u WHERE u.email = ?1 AND u.deletedAt IS NULL")
+    @Query("SELECT u FROM #{#entityName} u WHERE u.email = ?1 AND u.deletedAt IS NULL")
     public User findByEmail(String email);
    
 }

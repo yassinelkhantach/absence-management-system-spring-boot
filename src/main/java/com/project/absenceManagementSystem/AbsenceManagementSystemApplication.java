@@ -25,24 +25,21 @@ import com.project.absenceManagementSystem.repositories.ModuleRepository;
 import com.project.absenceManagementSystem.repositories.SessionTypeRepository;
 import com.project.absenceManagementSystem.repositories.UserRepository;
 
+import lombok.AllArgsConstructor;
+
 @SpringBootApplication
 @Transactional
+@AllArgsConstructor
 public class AbsenceManagementSystemApplication implements CommandLineRunner {
 	
-	@Autowired
 	private UserRepository userRepository;
 	
-	@Autowired
 	private AccountRepository accountRepository;
 
-	
-	@Autowired
 	private FiliereRepository filiereRepository;
 	
-	@Autowired
 	private ModuleRepository moduleRepository;
 	
-	@Autowired
 	private SessionTypeRepository sessionTypeRepository;
 
 	
