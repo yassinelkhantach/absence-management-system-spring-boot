@@ -69,13 +69,16 @@ public class WebSecurityConfig  {
 	            .loginPage("/login")
             .successHandler(new CustomAuthenticationSuccessHandler())
             .failureHandler(authenticationFailureHandler()) // configure the authentication failure handler
-	        .and()
+            .and()
 	        .logout()
 	            .invalidateHttpSession(true)
 	            .clearAuthentication(true)
+	            .deleteCookies("JSESSIONID")
 	            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 	            .logoutSuccessUrl("/login?logout")
 	            .permitAll()
+	            .and()
+	            .rememberMe()
 	            .and()
 	        .httpBasic();
 	 
