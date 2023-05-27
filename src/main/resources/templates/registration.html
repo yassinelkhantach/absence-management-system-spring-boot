@@ -119,12 +119,12 @@
                                     <span class="profile-views feather-eye toggle-password"></span>
                                 </div>
                                 
-                                 <div th:if="${param.success}">
-						            <div class="alert alert-info">You've successfully registered !</div>
+                                <div th:if="${successMessage}">
+						            <div class="alert alert-info" th:text="${successMessage}"></div>
 						        </div>
 						        
-								<div th:if="${param.error}">
-                                    <div class="alert alert-danger">An error occured ! try again</div>
+								<div th:else th:if="${failedMessage}">
+                                    <div class="alert alert-danger" th:text="${failedMessage}"></div>
                                 </div>	
                                 					        
                                 <div class=" dont-have">Already Registered? <a href="/" th:href="@{/login}">Login</a>

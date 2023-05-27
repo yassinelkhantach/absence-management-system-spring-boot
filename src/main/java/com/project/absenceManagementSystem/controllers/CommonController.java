@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.project.absenceManagementSystem.services.UserEntityService;
 
 @Controller
-@RequestMapping("/admin")
-public class AdministratorController {
+@RequestMapping(path = {"/","/admin","/student","/teacher","cadre-administrator"})
+public class CommonController {
 	@Autowired
 	private UserEntityService userService;
-
+	
 	@GetMapping
-	public String home(Model model ,Authentication auth){
+	public String home(Model model ,Authentication auth) {
 		model.addAttribute("user",userService.getUserByEmail(auth.getName()).get());
-		return "index";
+		return "index";	
 	}
 }

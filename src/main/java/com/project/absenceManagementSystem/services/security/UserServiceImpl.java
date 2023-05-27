@@ -1,10 +1,11 @@
-package com.project.absenceManagementSystem.services;
+package com.project.absenceManagementSystem.services.security;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -72,7 +73,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 	
-		User user = userRepository.findByEmail(username);
+		User user = userRepository.findByEmail(username).get();
 		if(user == null) {
 			throw new UsernameNotFoundException("Invalid username or password.");
 		}else
@@ -88,8 +89,8 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	private boolean emailExist(String email) {
-        User user = userRepository.findByEmail(email);
-        if (user != null) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (!user.isEmpty()) {
             return true;
         }
         return false;

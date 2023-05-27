@@ -10,10 +10,10 @@
 	<div layout:fragment="content" >
 		<h1 class="text-center" sec:authorize="hasRole('STUDENT')">Hello, you're a student</h1>
 		<h1 class="text-center" sec:authorize="hasRole('TEACHER')">Hello, you're a teacher</h1>
-		<h1 class="text-center" sec:authorize="hasRole('CADRE_ADMINISTRATOR')">Hello, you're a cadre administrator</h1>
+		<h1 class="text-center" sec:authorize="hasRole('CADRE_ADMINISTRATOR')">Hello, you're <b>cadre administrateur</b></h1>
 		<h1 class="text-center" sec:authorize="hasRole('ADMINISTRATOR')">Hello, you're a system administrator</h1>
 		
-	    <h4 class="mt-4" th:text=${#authentication}></h4>
+	    <h4 class="mt-4" th:text="${user.firstName+' '+user.lastName}"></h4>
 	    
 	    
 	</div>

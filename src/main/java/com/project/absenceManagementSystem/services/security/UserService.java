@@ -1,4 +1,4 @@
-package com.project.absenceManagementSystem.services;
+package com.project.absenceManagementSystem.services.security;
 
 
 import org.springframework.security.core.userdetails.UserDetailsService;

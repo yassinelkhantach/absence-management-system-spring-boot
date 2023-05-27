@@ -143,7 +143,7 @@
                             <img class="rounded-circle" th:src="@{/assets/img/profiles/avatar-01.jpg}" width="31"
                                 alt="Soeng Souy"/>
                             <div class="user-text">
-                                <h6>Soeng Souy</h6>
+                                <h6 th:text="${user.firstName+' '+user.lastName}"></h6>
                                 <p class="text-muted mb-0" sec:authorize="hasRole('CADRE_ADMINISTRATOR')">Cadre administrateur</p>	
                                 <p class="text-muted mb-0" sec:authorize="hasRole('STUDENT')">Etudiant</p>
                                 <p class="text-muted mb-0" sec:authorize="hasRole('TEACHER')">Professeur</p>                                
@@ -157,7 +157,7 @@
                                     class="avatar-img rounded-circle">
                             </div>
                             <div class="user-text">
-                                <h6>Soeng Souy</h6>
+                                <h6 th:text="${user.firstName+' '+user.lastName}"></h6>
                                 <p class="text-muted mb-0" sec:authorize="hasRole('CADRE_ADMINISTRATOR')">Cadre administrateur</p>	
                                 <p class="text-muted mb-0" sec:authorize="hasRole('STUDENT')">Etudiant</p>
                                 <p class="text-muted mb-0" sec:authorize="hasRole('TEACHER')">Professeur</p>                                
@@ -175,7 +175,7 @@
 
 
         <div class="sidebar" id="sidebar">
-            <div class="sidebar-inner slimscroll">
+            <div sec:authorize="hasRole('CADRE_ADMINISTRATOR')" class="sidebar-inner slimscroll">
                 <div id="sidebar-menu" class="sidebar-menu">
                     <ul>
                         <li class="menu-title">
@@ -198,7 +198,7 @@
                             <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Professeurs</span> <span
                                     class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="teachers.html">Teacher List</a></li>
+                                <li><a th:href="@{/cadre-administrator/teachers}">Teacher List</a></li>
                                 <li><a href="teacher-details.html">Teacher View</a></li>
                                 <li><a href="add-teacher.html">Teacher Add</a></li>
                                 <li><a href="edit-teacher.html">Teacher Edit</a></li>
@@ -208,7 +208,7 @@
                             <a href="#"><i class="fas fa-graduation-cap"></i> <span> Etudiants</span> <span
                                     class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="students.html">Student List</a></li>
+                                <li><a th:href="@{/cadre-administrator/students}">Student List</a></li>
                                 <li><a href="student-details.html">Student View</a></li>
                                 <li><a href="add-student.html">Student Add</a></li>
                                 <li><a href="edit-student.html">Student Edit</a></li>

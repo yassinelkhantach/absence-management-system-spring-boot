@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.absenceManagementSystem.dto.UserRegistrationDto;
-import com.project.absenceManagementSystem.services.UserService;
+import com.project.absenceManagementSystem.services.security.UserService;
 
 
 @Controller
@@ -37,8 +38,11 @@ public class UserRegistrationController {
 	}
 	
 	@PostMapping
-	public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto) {
-		userService.save(registrationDto);
-		return "redirect:/registration?success";
+	public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto, RedirectAttributes redirectAttributes) {
+		if(userService.save(registrationDto) != null)
+			redirectAttributes.addFlashAttribute("successMessage", "You've successfully registered !");
+		else
+			redirectAttributes.addFlashAttribute("failedMessage", "An error occured ! Pleease try again");
+		return "redirect:/registration";
 	}
 }

@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.project.absenceManagementSystem.entities.Student;
+import com.project.absenceManagementSystem.entities.Teacher;
 import com.project.absenceManagementSystem.entities.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
@@ -76,8 +78,14 @@ public interface UserRepository extends JpaRepository<User, Long>{
     void deleteAll();
    
     
-    
+  
     @Query("SELECT u FROM #{#entityName} u WHERE u.email = ?1 AND u.deletedAt IS NULL")
-    public User findByEmail(String email);
+    public Optional<User> findByEmail(String email);
+    
+    @Query("SELECT u FROM #{#entityName} u WHERE u.deletedAt IS NULL")
+    public List<Student> findAllStudents();
+   
+    @Query("SELECT u FROM #{#entityName} u WHERE u.deletedAt IS NULL")
+    public List<Teacher> findAllTeachers();
    
 }

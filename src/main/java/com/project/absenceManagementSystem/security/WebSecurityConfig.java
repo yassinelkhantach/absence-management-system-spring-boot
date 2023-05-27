@@ -14,7 +14,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import com.project.absenceManagementSystem.services.UserService;
+
+import com.project.absenceManagementSystem.services.security.UserService;
 
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 
@@ -75,7 +76,7 @@ public class WebSecurityConfig  {
 	            .clearAuthentication(true)
 	            .deleteCookies("JSESSIONID")
 	            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-	            .logoutSuccessUrl("/login?logout")
+	            .logoutSuccessUrl("/login")
 	            .permitAll()
 	            .and()
 	            .rememberMe()
