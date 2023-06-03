@@ -23,6 +23,9 @@ public class Module {
 	@OneToMany(mappedBy = "module",cascade = CascadeType.ALL)
 	private List<Element> elements;
 	
+	public Module() {
+		
+	}
 	
 	public Module(String codeModule, String label, Level level, List<Element> elements) {
 		super();

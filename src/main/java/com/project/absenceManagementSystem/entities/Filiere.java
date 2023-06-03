@@ -26,7 +26,9 @@ public class Filiere {
 	private List<Coordination> coordinations;
 	
 	
-	
+	public Filiere() {
+		
+	}
 	public Filiere(String label, String alias, Date accreditationStart, Date accreditationEnd, List<Level> levels) {
 		super();
 		this.label = label;

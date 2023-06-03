@@ -21,6 +21,8 @@ public class Teacher extends User{
 	private List<AuthorizationRequest> authorizationRequests;
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "teacher")
 	private List<Coordination> coordinations;
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "teacher")
+	private List<Element> elements;
     
 	
     
@@ -58,6 +60,32 @@ public class Teacher extends User{
 	public void setAbsences(List<Absence> absences) {
 		this.absences = absences;
 	}
+
+	public List<AuthorizationRequest> getAuthorizationRequests() {
+		return authorizationRequests;
+	}
+
+	public void setAuthorizationRequests(List<AuthorizationRequest> authorizationRequests) {
+		this.authorizationRequests = authorizationRequests;
+	}
+
+	public List<Coordination> getCoordinations() {
+		return coordinations;
+	}
+
+	public void setCoordinations(List<Coordination> coordinations) {
+		this.coordinations = coordinations;
+	}
+
+	public List<Element> getElements() {
+		return elements;
+	}
+
+	public void setElements(List<Element> elements) {
+		this.elements = elements;
+	}
+	
+	
 
 	
 }

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/main}">
+<head>
+<meta charset="UTF-8">
+<title>AMS ENSAH | Student Details</title>
+<script type="text/javascript" th:src="@{/js/students.js}"></script>
+<style>
+#user-img{
+    height: 150px;
+    max-width: 150px;
+    width: 150px;
+    object-fit:cover;
+}
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="page-sub-header">
+						<h3 class="page-title"><i class="fas fa-info-circle me-1"></i> Consultation des informations d'un(e) étudiant(e)</h3>
+						<ul class="breadcrumb">
+							<li class="breadcrumb-item"><a th:href="@{/cadre-administrator/students}">Etudiants</a></li>
+							<li class="breadcrumb-item"><a th:href="@{/cadre-administrator/students}">Tous les étudiants</a></li>
+							<li class="breadcrumb-item active">Détails étudiant</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-12">
+					
+						<div class="student-profile-head mt-3">
+							<!--<div class="profile-bg-img">
+								<img th:src="@{/assets/img/ensah.jpg}" height="280" class="object-fit-cover" alt="Profile">
+							</div>-->
+							<div class="row">
+								<div class="col-lg-4 col-md-4">
+									<div class="profile-user-box">
+										<div class="profile-user-img">
+											<img th:src="@{${student.picture} ? ${student.picture} : '/assets/img/profiles/unknown.png' }" id="user-img" alt="Profile">
+											<div class="form-group students-up-files mb-0"></div>
+										</div>
+										<div class="names-profiles">
+											<h4 th:text="${student.firstName+' '+student.lastName}"></h4>
+											<h6 th:text="${student.firstNameAr+' '+student.lastNameAr}"></h6>
+											<h5>Etudiant(e)</h5>
+										</div>
+									</div>
+								</div>
+								<div class="col"></div>
+								<div class="col-lg-3 col-md-4 d-flex align-items-center justify-content-center">
+									<i class="fas fa-calendar me-2"></i> Rejoint le <span class="ms-1" th:text="${#dates.format(student.createdAt, 'dd/MM/yyyy à HH:mm:ss')}"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-4">
+						<div class="student-personals-grp">
+							<div class="card">
+								<div class="card-body">
+									<div class="heading-detail">
+										<h4><i class="fas fa-info-circle me-1"></i> Informations personnelles :</h4>
+									</div>
+									<div class="personal-activity">
+										<div class="personal-icons">
+											<i class="feather-user"></i>
+										</div>
+										<div class="views-personal">
+											<h4>Nom</h4>
+											<h5 th:text="${student.firstName+' '+student.lastName}"></h5>
+										</div>
+									</div>
+									<div class="personal-activity">
+										<div class="personal-icons">
+											<i class="feather-home"></i>
+										</div>
+										<div class="views-personal">
+											<h4>Filière</h4>
+											<h5>Génie Informatique</h5>
+										</div>
+									</div>
+									<div class="personal-activity">
+										<div class="personal-icons">
+											<i class="feather-phone-call"></i>
+										</div>
+										<div class="views-personal">
+											<h4>Téléphone</h4>
+											<h5 th:text="${student.phone}"></h5>
+										</div>
+									</div>
+									<div class="personal-activity">
+										<div class="personal-icons">
+											<i class="feather-mail"></i>
+										</div>
+										<div class="views-personal">
+											<h4>Email</h4>
+											<h5><a th:href="${'mailto:'+student.email}" th:text="${student.email}"></a></h5>
+										</div>
+									</div>
+									<div class="personal-activity">
+										<div class="personal-icons">
+											<i class="feather-hash"></i>
+										</div>
+										<div class="views-personal">
+											<h4>CNE</h4>
+											<h5 th:text="${student.cne}"></h5>
+										</div>
+									</div>
+									<div class="personal-activity">
+										<div class="personal-icons">
+											<i class="feather-hash"></i>
+										</div>
+										<div class="views-personal">
+											<h4>CIN</h4>
+											<h5 th:text="${student.cin}"></h5>
+										</div>
+									</div>
+									<div class="personal-activity">
+										<div class="personal-icons">
+											<i class="feather-calendar"></i>
+										</div>
+										<div class="views-personal">
+											<h4>Date de naissance</h4>
+											<h5 th:text="${#dates.format(student.birthDate, 'dd/MM/yyyy')}"></h5>
+										</div>
+									</div>
+									<div class="personal-activity" th:if="${student.registrations[0].status}">
+										<div class="personal-icons">
+											<i class="feather-check-circle text-success"></i>
+										</div>
+										<div class="views-personal">
+											<h4>Inscription à l'AU 2022/2023</h4>
+											<h5 th:text="${'Numéro d`inscription : '+student.registrations[0].id}"></h5>
+										</div>
+									</div>
+									<div class="personal-activity" th:else th:if="!${student.registrations[0].status}">
+										<div class="personal-icons">
+											<i class="feather-check-circle text-danger"></i>
+										</div>
+										<div class="views-personal">
+											<h4 class="text-danger">Inscription dans l'AU 2022/2023</h4>
+											<h5 class="text-danger">N'est pas encore confirmée</h5>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="student-personals-grp">
+							<div class="card mb-0">
+								<div class="card-body">
+									<div class="heading-detail">
+										<h4>Demandes :</h4>
+									</div>
+									<div class="skill-blk">
+										<div class="table-responsive">
+											<table
+												class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
+												<thead class="student-thread">
+													<tr>
+														<th>Type</th>
+														<th>Contenu</th>
+														<th>Justificatif(s)</th>
+													</tr>
+												</thead>
+												<tbody>
+													
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="skill-blk text-center mt-3">
+										<a href="#" class="btn">Voir plus</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-8">
+						<div class="student-personals-grp">
+							<div class="card mb-0">
+								<div class="card-body">
+									<div class="heading-detail">
+										<h4><i class="fas fa-clipboard me-1"></i> Fiche d'absence</h4>
+									</div>
+									
+									<div id="calendar"></div>
+						
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

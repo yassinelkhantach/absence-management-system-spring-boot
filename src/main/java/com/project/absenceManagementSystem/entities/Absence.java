@@ -2,8 +2,11 @@ package com.project.absenceManagementSystem.entities;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -11,33 +14,44 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "absences")
-public class Absence {
+@AllArgsConstructor
+public class Absence{
+
+	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Boolean justified;
+	private Boolean justified=false;
 	private Date createdAt;
 	private Date deletedAt;
+	private Date start;
+	private Date end;
 	@OneToOne(cascade = CascadeType.ALL,mappedBy = "absence")
 	private AbsenceJustification justification;
+    @JsonIgnore
 	@ManyToOne
     @JoinColumn(name = "session_type_id", referencedColumnName = "id")
 	private SessionType sessionType;
-	@ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "teacher_id", referencedColumnName = "id")
 	private Teacher teacher;
-	@ManyToOne
-    @JoinColumn(name = "student_id", referencedColumnName = "id")
-	private Student student;
-	@ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "element_id", referencedColumnName = "id")
 	private Element element;
-	@ManyToOne
+	@JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "registration_id", referencedColumnName = "id")
 	private Registration registration;
 	
+	
+	public Absence() {
+		
+	}
 
 	public SessionType getSessionType() {
 		return sessionType;
@@ -53,14 +67,6 @@ public class Absence {
 
 	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
-	}
-
-	public Student getStudent() {
-		return student;
-	}
-
-	public void setStudent(Student student) {
-		this.student = student;
 	}
 
 	public Element getElement() {
@@ -118,5 +124,23 @@ public class Absence {
 	public void setJustification(AbsenceJustification justification) {
 		this.justification = justification;
 	}
+
+	public Date getStart() {
+		return start;
+	}
+
+	public void setStart(Date start) {
+		this.start = start;
+	}
+
+	public Date getEnd() {
+		return end;
+	}
+
+	public void setEnd(Date end) {
+		this.end = end;
+	}
+	
+	
 	
 }

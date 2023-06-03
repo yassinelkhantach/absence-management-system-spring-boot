@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/main}">
+<head>
+<meta charset="utf-8">
+<title>AMS ENSAH | Profile</title>
+<style>
+	#uploadedImage{
+	    height: 120px;
+	    max-width: 120px;
+	    width: 120px;
+	    object-fit:cover;
+	}
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="page-header">
+			<div class="row">
+				<div class="col">
+					<h3 class="page-title">Profile</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a th:href="@{/}">Dashboard</a></li>
+						<li class="breadcrumb-item"><a th:href="@{/profile}">Profile</a></li>
+						<li class="breadcrumb-item active">Editer</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div sec:authorize="hasRole('CADRE_ADMINISTRATOR')" class="row">
+			<div class="col-md-12">
+				<div class="profile-header">
+					<div class="row align-items-center">
+						<div class="col-auto profile-image">
+							<img class="rounded-circle" alt="User Image"
+								th:src="@{/assets/img/profiles/unknown.png}">
+						</div>
+						<div class="col ms-md-n2 profile-user-info">
+							<h4 class="user-name mb-0"
+								th:text="${user.firstName+' '+user.lastName}"></h4>
+							<h6 class="text-muted">Cadre administrateur</h6>
+
+							<div class="user-Location">
+								<i class="fas fa-address-card"></i> <span
+									th:text="${user.grade}"></span>
+							</div>
+							<div class="about-text">
+								<i class="fas fa-language"></i> <span
+									th:text="${user.firstNameAr+' '+user.lastNameAr}"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="profile-menu">
+					<ul class="nav nav-tabs nav-tabs-solid">
+						<li class="nav-item"><a class="nav-link active"
+							data-bs-toggle="tab" href="#per_details_tab">À propos</a></li>
+						<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+							href="#password_tab">Mot de passe</a></li>
+					</ul>
+				</div>
+				<div class="tab-content profile-tab-cont">
+
+					<div class="tab-pane fade show active" id="per_details_tab">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="card" id="personal-data-section">
+									<div class="card-body">
+                                        <form th:action="@{/cadre-administrator/profile/edit}" method="post" id="personal-data-form" th:object="${user}">
+                                            <h5 class="card-title d-flex justify-content-between mb-4">
+                                                <span>Informations Personnelles</span> 
+                                                <button type="submit" class="btn edit-link" id="edit-link">
+                                                    <i class="fas fa-check me-1"></i>
+                                                </button>
+                                            </h5>
+                                            <input type="hidden"  th:field="*{id}" name="id" th:value="${user.id}"/>
+                                            <div class="row d-flex align-items-center">
+                                                <p class="col-sm-3 text-muted mb-0">Nom complet
+                                                    en français :</p>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-3" th:field="*{firstName}" id="firstName" th:value="${user.firstName}"/>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-3" th:field="*{lastName}" id="lastName" th:value="${user.lastName}"/>
+                                                <span class="error-message"></span>
+                                            </div>
+                                            <div class="row d-flex align-items-center">
+                                                <p class="col-sm-3 text-muted mb-0">Nom complet
+                                                    en arabe :</p>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-3" th:field="*{firstNameAr}" id="firstNameAr" th:value="${user.firstNameAr}"/>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-3" th:field="*{lastNameAr}" id="lastNameAr" th:value="${user.lastNameAr}"/>
+                                                <span class="error-message"></span>
+                                            </div>
+                                            <div class="row d-flex align-items-center">
+                                                <p class="col-sm-3 text-muted  mb-0">Grade :</p>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-6" th:field="*{grade}" id="cin" th:value="${user.grade}"/>
+                                                <span class="error-message"></span>
+                                            </div>
+                                            <div class="row d-flex align-items-center">
+                                                <p class="col-sm-3 text-muted mb-0">Email :</p>
+                                                <input type="email" class="me-1 mb-1 border-1 col-sm-6" th:field="*{email}" id="email" th:value="${user.email}"/>
+                                                <span class="error-message"></span>
+                                            </div>
+                                            <div class="row d-flex align-items-center">
+                                                <p class="col-sm-3 text-muted mb-0 ">Mobile :</p>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-6" th:field="*{phone}" id="phone" th:value="${user.phone}"/>
+                                                <span class="error-message"></span>
+                                            </div>
+                                        </form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<div id="password_tab" class="tab-pane fade">
+						<div class="card">
+							<div class="card-body">
+								<h5 class="card-title">Changer le mot de passe</h5>
+								<div class="row">
+									<div class="col-md-10 col-lg-6">
+										<form>
+											<div class="form-group">
+												<label for="password">Ancien mot de passe</label> <input
+													type="password" class="form-control" id="password">
+											</div>
+											<div class="form-group">
+												<label for="new-password">Nouveau mot de passe</label> <input
+													type="password" class="form-control" id="new-password">
+											</div>
+											<div class="form-group">
+												<label for="confirm-password">Confirmer le nouveau
+													mot de passe</label> <input type="password" class="form-control"
+													id="confirm-password">
+											</div>
+											<button class="btn btn-primary" type="submit">Enregistrer</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div sec:authorize="hasRole('TEACHER')" class="row">
+			<div class="col-md-12">
+				<div class="profile-header">
+					<div class="row align-items-center">
+						<div class="col-auto profile-image">
+							<img class="rounded-circle" alt="User Image"
+								th:src="@{/assets/img/profiles/unknown.png}">
+						</div>
+						<div class="col ms-md-n2 profile-user-info">
+							<h4 class="user-name mb-0"
+								th:text="${user.firstName+' '+user.lastName}"></h4>
+							<h6 class="text-muted">Professeur</h6>
+
+							<div class="about-text">
+								<i class="fas fa-language"></i> <span
+									th:text="${user.firstNameAr+' '+user.lastNameAr}"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="profile-menu">
+					<ul class="nav nav-tabs nav-tabs-solid">
+						<li class="nav-item"><a class="nav-link active"
+							data-bs-toggle="tab" href="#per_details_tab">À propos</a></li>
+						<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+							href="#password_tab">Mot de passe</a></li>
+					</ul>
+				</div>
+				<div class="tab-content profile-tab-cont">
+
+					<div class="tab-pane fade show active" id="per_details_tab">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="card" id="personal-data-section">
+									<div class="card-body">
+                                        <form th:action="@{/teacher/profile/edit}" method="post" id="personal-data-form" th:object="${user}">
+                                            <h5 class="card-title d-flex justify-content-between mb-4">
+                                                <span>Informations Personnelles</span> 
+                                                <button type="submit" class="btn edit-link" id="edit-link">
+                                                    <i class="fas fa-check me-1"></i>
+                                                </button>
+                                            </h5>
+                                            <input type="hidden"  th:field="*{id}" name="id" th:value="${user.id}"/>
+                                            <div class="row d-flex align-items-center">
+                                                <p class="col-sm-3 text-muted mb-0">Nom complet
+                                                    en français :</p>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-3" th:field="*{firstName}" id="firstName" th:value="${user.firstName}"/>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-3" th:field="*{lastName}" id="lastName" th:value="${user.lastName}"/>
+                                                <span class="error-message"></span>
+                                            </div>
+                                            <div class="row d-flex align-items-center">
+                                                <p class="col-sm-3 text-muted mb-0">Nom complet
+                                                    en arabe :</p>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-3" th:field="*{firstNameAr}" id="firstNameAr" th:value="${user.firstNameAr}"/>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-3" th:field="*{lastNameAr}" id="lastNameAr" th:value="${user.lastNameAr}"/>
+                                                <span class="error-message"></span>
+                                            </div>
+                                            <div class="row d-flex align-items-center">
+                                                <p class="col-sm-3 text-muted  mb-0">CIN :</p>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-6" th:field="*{cin}" id="cin" th:value="${user.cin}"/>
+                                                <span class="error-message"></span>
+                                            </div>
+                                            <div class="row d-flex align-items-center">
+                                                <p class="col-sm-3 text-muted mb-0">Email :</p>
+                                                <input type="email" class="me-1 mb-1 border-1 col-sm-6" th:field="*{email}" id="email" th:value="${user.email}"/>
+                                                <span class="error-message"></span>
+                                            </div>
+                                            <div class="row d-flex align-items-center">
+                                                <p class="col-sm-3 text-muted mb-0 ">Mobile :</p>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-6" th:field="*{phone}" id="phone" th:value="${user.phone}"/>
+                                                <span class="error-message"></span>
+                                            </div>
+                                        </form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<div id="password_tab" class="tab-pane fade">
+						<div class="card">
+							<div class="card-body">
+								<h5 class="card-title">Changer le mot de passe</h5>
+								<div class="row">
+									<div class="col-md-10 col-lg-6">
+										<form>
+											<div class="form-group">
+												<label for="password">Ancien mot de passe</label> <input
+													type="password" class="form-control" id="password">
+											</div>
+											<div class="form-group">
+												<label for="new-password">Nouveau mot de passe</label> <input
+													type="password" class="form-control" id="new-password">
+											</div>
+											<div class="form-group">
+												<label for="confirm-password">Confirmer le nouveau
+													mot de passe</label> <input type="password" class="form-control"
+													id="confirm-password">
+											</div>
+											<button class="btn btn-primary" type="submit">Enregistrer</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div sec:authorize="hasRole('STUDENT')" class="row">
+			<div class="col-md-12">			
+				<div class="profile-header">
+					<div class="row align-items-center">
+						<div id="imageContainer" class="col-auto profile-image">
+							<img id="uploadedImage" class="rounded-circle" alt="User Image" th:src="@{${user.picture} ? ${user.picture} : '/assets/img/profiles/unknown.png'}" >
+						</div>
+						<div class="col ms-md-n2 profile-user-info">
+							<h4 class="user-name mb-0"
+								th:text="${user.firstName+' '+user.lastName}"></h4>
+							<h6 class="text-muted">Etudiant</h6>
+
+							<div class="about-text">
+								<i class="fas fa-language"></i> <span
+									th:text="${user.firstNameAr+' '+user.lastNameAr}"></span>
+							</div>
+						</div>
+						<div class="col-auto profile-btn">
+							<form id="image-form" th:action="@{/profile/edit/photo}" method="POST" enctype="multipart/form-data">
+								<label for="imageUpload" class="btn btn-primary m-0"><i class="fas fa-camera"></i></label>
+							  	<input type="file" name="photo" id="imageUpload" hidden="true"/>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="profile-menu">
+					<ul class="nav nav-tabs nav-tabs-solid">
+						<li class="nav-item"><a class="nav-link active"
+							data-bs-toggle="tab" href="#per_details_tab">À propos</a></li>
+						<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+							href="#password_tab">Mot de passe</a></li>
+					</ul>
+				</div>
+				<div class="tab-content profile-tab-cont">
+					<div class="tab-pane fade show active" id="per_details_tab">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="card" id="personal-data-section">
+									<div class="card-body">
+                                        <form th:action="@{/profile/edit}" method="post" id="personal-data-form" th:object="${user}">
+                                            <h5 class="card-title d-flex justify-content-between mb-4">
+                                                <span>Informations Personnelles</span> 
+                                                <button type="submit" class="btn edit-link" id="edit-link">
+                                                    <i class="fas fa-check me-1"></i>
+                                                </button>
+                                            </h5>
+                                            <input type="hidden"  th:field="*{id}" name="id" th:value="${user.id}"/>
+                                            <div class="row d-flex align-items-center">
+                                                <p class="col-sm-3 text-muted mb-0">Nom complet
+                                                    en français :</p>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-3" th:field="*{firstName}" id="firstName" th:value="${user.firstName}"/>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-3" th:field="*{lastName}" id="lastName" th:value="${user.lastName}"/>
+                                                <span class="error-message"></span>
+                                            </div>
+                                            <div class="row d-flex align-items-center">
+                                                <p class="col-sm-3 text-muted mb-0">Nom complet
+                                                    en arabe :</p>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-3" th:field="*{firstNameAr}" id="firstNameAr" th:value="${user.firstNameAr}"/>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-3" th:field="*{lastNameAr}" id="lastNameAr" th:value="${user.lastNameAr}"/>
+                                                <span class="error-message"></span>
+                                            </div>
+                                            <div class="row d-flex align-items-center">
+                                                <p class="col-sm-3 text-muted  mb-0">Date de
+                                                    naissance :</p>
+                                                <input type="date" class="me-1 mb-1 border-1 col-sm-6" th:field="*{birthDate}" th:value="${user.birthDate}" id="birthDate"/>
+                                                <span class="error-message"></span>
+                                            </div>
+                                            <div class="row d-flex align-items-center">
+                                                <p class="col-sm-3 text-muted  mb-0">CNE :</p>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-6" th:field="*{cne}" id="cne" th:value="${user.cne}"/>
+                                                <span class="error-message"></span>
+                                            </div>
+                                            <div class="row d-flex align-items-center">
+                                                <p class="col-sm-3 text-muted  mb-0">CIN :</p>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-6" th:field="*{cin}" id="cin" th:value="${user.cin}"/>
+                                                <span class="error-message"></span>
+                                            </div>
+                                            <div class="row d-flex align-items-center">
+                                                <p class="col-sm-3 text-muted mb-0">Email :</p>
+                                                <input type="email" class="me-1 mb-1 border-1 col-sm-6" th:field="*{email}" id="email" th:value="${user.email}"/>
+                                                <span class="error-message"></span>
+                                            </div>
+                                            <div class="row d-flex align-items-center">
+                                                <p class="col-sm-3 text-muted mb-0 ">Mobile :</p>
+                                                <input type="text" class="me-1 mb-1 border-1 col-sm-6" th:field="*{phone}" id="phone" th:value="${user.phone}"/>
+                                                <span class="error-message"></span>
+                                            </div>
+                                        </form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<div id="password_tab" class="tab-pane fade">
+						<div class="card">
+							<div class="card-body">
+								<h5 class="card-title">Changer le mot de passe</h5>
+								<div class="row">
+									<div class="col-md-10 col-lg-6">
+										<form>
+											<div class="form-group">
+												<label for="password">Ancien mot de passe</label> <input
+													type="password" class="form-control" id="password">
+											</div>
+											<div class="form-group">
+												<label for="new-password">Nouveau mot de passe</label> <input
+													type="password" class="form-control" id="new-password">
+											</div>
+											<div class="form-group">
+												<label for="confirm-password">Confirmer le nouveau
+													mot de passe</label> <input type="password" class="form-control"
+													id="confirm-password">
+											</div>
+											<button class="btn btn-primary" type="submit">Enregistrer</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+        <script type="text/javascript" th:src="@{/js/profile.js}"></script>
+	</div>
+</body>
+</html>

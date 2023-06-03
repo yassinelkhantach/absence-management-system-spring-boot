@@ -19,6 +19,9 @@ public class SessionType {
 	@OneToMany(mappedBy = "sessionType",cascade = CascadeType.ALL)
 	private List<Absence> absences;
 	
+	public SessionType() {
+		
+	}
 	
 	public SessionType(String label) {
 		super();

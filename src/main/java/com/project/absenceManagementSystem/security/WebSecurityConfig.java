@@ -1,6 +1,5 @@
 package com.project.absenceManagementSystem.security;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,9 +21,10 @@ import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig  {
+public class WebSecurityConfig {
 	
 	private static final String[] AUTH_WHITELIST = {
+			"/public/*",
             "/assets/**",
 			"/js/**",
             "/bootstrap/**",
@@ -53,11 +53,12 @@ public class WebSecurityConfig  {
 	@Bean
 	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 	    http
+	    .csrf().disable()
 	        .authorizeHttpRequests((requests) -> {
 	            try {
 	                requests
-	                    .requestMatchers(AUTH_WHITELIST).permitAll()
-	                    .requestMatchers("/student/**").hasRole("STUDENT")
+                    	.requestMatchers(AUTH_WHITELIST).permitAll()
+                    	.requestMatchers("/student/**").hasRole("STUDENT")
 	                    .requestMatchers("/teacher/**").hasRole("TEACHER")
 	                    .requestMatchers("/cadre-administrator/**").hasRole("CADRE_ADMINISTRATOR")
 	                    .requestMatchers("/admin/**").hasRole("ADMINISTRATOR")
@@ -101,6 +102,7 @@ public class WebSecurityConfig  {
         expressionHandler.setRoleHierarchy(roleHierarchy());
         return expressionHandler;
     }
+
     
     @Bean
     public CustomAuthenticationFailureHandler authenticationFailureHandler() {

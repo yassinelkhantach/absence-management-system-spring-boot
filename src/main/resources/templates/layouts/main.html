@@ -15,11 +15,16 @@
     <link rel="stylesheet" th:href="@{/assets/plugins/icons/flags/flags.css}">
     <link rel="stylesheet" th:href="@{/assets/plugins/fontawesome/css/fontawesome.min.css}">
     <link rel="stylesheet" th:href="@{/assets/plugins/fontawesome/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap-datetimepicker.min.css}">
+	<link rel="stylesheet" th:href="@{/assets/plugins/fullcalendar/fullcalendar.min.css}">
     <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
+	
 </head>
 
 <body>
-
+	
     <div class="main-wrapper">
 
         <div class="header">
@@ -140,8 +145,11 @@
                 <li class="nav-item dropdown has-arrow new-user-menus">
                     <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                         <span class="user-img">
-                            <img class="rounded-circle" th:src="@{/assets/img/profiles/avatar-01.jpg}" width="31"
-                                alt="Soeng Souy"/>
+                            <img sec:authorize="hasRole('STUDENT')" class="rounded-circle" th:src="@{${user.picture} != null ? ${user.picture} : '/assets/img/profiles/unknown.png'}" width="31"
+                                alt="Soeng Souy"/>     
+                            <img sec:authorize="!hasRole('STUDENT')" th:src="@{/assets/img/profiles/unknown.png}" alt="User Image"
+                                 class="avatar-img rounded-circle">
+                                                  
                             <div class="user-text">
                                 <h6 th:text="${user.firstName+' '+user.lastName}"></h6>
                                 <p class="text-muted mb-0" sec:authorize="hasRole('CADRE_ADMINISTRATOR')">Cadre administrateur</p>	
@@ -153,7 +161,9 @@
                     <div class="dropdown-menu">
                         <div class="user-header">
                             <div class="avatar avatar-sm">
-                                <img th:src="@{/assets/img/profiles/avatar-01.jpg}" alt="User Image"
+                                <img sec:authorize="hasRole('STUDENT')" th:src="@{${user.picture} != null ? ${user.picture} : '/assets/img/profiles/unknown.png'}" alt="User Image"
+                                    class="avatar-img rounded-circle">
+                                <img sec:authorize="!hasRole('STUDENT')" th:src="@{/assets/img/profiles/unknown.png}" alt="User Image"
                                     class="avatar-img rounded-circle">
                             </div>
                             <div class="user-text">
@@ -163,7 +173,7 @@
                                 <p class="text-muted mb-0" sec:authorize="hasRole('TEACHER')">Professeur</p>                                
                             </div>
                         </div>
-                        <a class="dropdown-item" href="">My Profile</a>
+                        <a class="dropdown-item" th:href="@{/profile}">My Profile</a>
                         <a class="dropdown-item" href="">Inbox</a>
                         <a class="dropdown-item" th:href="@{/logout}">Logout</a>
                     </div>
@@ -182,45 +192,49 @@
                             <span>Menu Général</span>
                         </li>
                         <li class="submenu active">
-                            <a th:href="@{/}"><i class="feather-grid"></i> <span> Dashboard</span></a>
+                            <a th:href="@{/cadre-administrator}"><i class="feather-grid"></i> <span> Dashboard</span></a>
                         </li>
-                        <li class="submenu">
+                        <!--<li class="submenu">
                             <a href="#"><i class="fas fa-graduation-cap"></i> <span> Administration</span> <span
                                     class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="students.html">Student List</a></li>
-                                <li><a href="student-details.html">Student View</a></li>
-                                <li><a href="add-student.html">Student Add</a></li>
-                                <li><a href="edit-student.html">Student Edit</a></li>
+                                <li><a th:href="@{/}"><i class="fas fa-list"></i> Consulter tous</a></li>
+								<li><a th:href="@{/}"><i class="fas fa-user-plus"></i> Ajouter</a></li>
+								<li><a th:href="@{/}"><i class="fas fa-archive"></i> Archive</a></li>
                             </ul>
-                        </li>
+                        </li>-->
                         <li class="submenu">
                             <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Professeurs</span> <span
                                     class="menu-arrow"></span></a>
                             <ul>
-                                <li><a th:href="@{/cadre-administrator/teachers}">Teacher List</a></li>
-                                <li><a href="teacher-details.html">Teacher View</a></li>
-                                <li><a href="add-teacher.html">Teacher Add</a></li>
-                                <li><a href="edit-teacher.html">Teacher Edit</a></li>
+                              	<li><a th:href="@{/cadre-administrator/teachers}"><i class="fas fa-list"></i> Consulter tous</a></li>
+								<li><a th:href="@{/cadre-administrator/teacher/add}"><i class="fas fa-user-plus"></i> Ajouter</a></li>
+								<li><a th:href="@{/}"><i class="fas fa-archive"></i> Archive</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
                             <a href="#"><i class="fas fa-graduation-cap"></i> <span> Etudiants</span> <span
                                     class="menu-arrow"></span></a>
                             <ul>
-                                <li><a th:href="@{/cadre-administrator/students}">Student List</a></li>
-                                <li><a href="student-details.html">Student View</a></li>
-                                <li><a href="add-student.html">Student Add</a></li>
-                                <li><a href="edit-student.html">Student Edit</a></li>
+                             	<li><a th:href="@{/cadre-administrator/students}"><i class="fas fa-list"></i> Consulter tous</a></li>
+								<li><a th:href="@{/cadre-administrator/student/add}"><i class="fas fa-user-plus"></i> Ajouter</a></li>
+								<li><a th:href="@{/}"><i class="fas fa-archive"></i> Archive</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
                             <a href="#"><i class="fas fa-building"></i> <span> Départements</span> <span
                                     class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="departments.html">Department List</a></li>
-                                <li><a href="add-department.html">Department Add</a></li>
-                                <li><a href="edit-department.html">Department Edit</a></li>
+                                <li>
+                                	<a href="departments.html">
+                                		<i class="fas fa-calculator"></i> Math & Informatique
+                                	</a>
+                                </li>
+                                <li>
+                                	<a href="add-department.html">
+                                		<i class="fas fa-atom"></i> Physique & Chimie
+                                	</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="submenu">
@@ -239,20 +253,100 @@
                             <a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Comptes</span> <span
                                     class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="fees-collections.html">Fees Collection</a></li>
-                                <li><a href="expenses.html">Expenses</a></li>
-                                <li><a href="salary.html">Salary</a></li>
-                                <li><a href="add-fees-collection.html">Add Fees</a></li>
-                                <li><a href="add-expenses.html">Add Expenses</a></li>
-                                <li><a href="add-salary.html">Add Salary</a></li>
+                                <li><a href="fees-collections.html"><i class="fas fa-user-tie"></i> Administrateurs</a></li>
+                                <li><a href="expenses.html"><i class="fas fa-chalkboard-teacher"></i> Professeurs</a></li>
+                                <li><a href="salary.html"><i class="fas fa-graduation-cap"></i> Etudiants</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="time-table.html"><i class="fas fa-table"></i> <span>Absences</span></a>
+                            <a th:href="@{/cadre-administrator/absences}"><i class="fas fa-table"></i> <span>Absences</span></a>
                         </li>
                         <li>
                             <a href="library.html"><i class="fas fa-book"></i> <span>Demandes</span></a>
                         </li>
+                        <li class="menu-title">
+                            <span>Autres</span>
+                        </li>
+                        <li>
+                            <a href="settings.html"><i class="fas fa-cog"></i> <span>Paramétres</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+        	<div sec:authorize="hasRole('TEACHER')" class="sidebar-inner slimscroll">
+                <div id="sidebar-menu" class="sidebar-menu">
+                    <ul>
+                        <li class="menu-title">
+                            <span>Menu Général</span>
+                        </li>
+                        <li class="submenu active">
+                            <a th:href="@{/teacher}"><i class="feather-grid"></i> <span> Dashboard</span></a>
+                        </li>
+                       
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-graduation-cap"></i> <span> Etudiants</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a th:href="@{/cadre-administrator/students}">Student List</a></li>
+                                <li><a href="student-details.html">Student View</a></li>
+                                <li><a href="add-student.html">Student Add</a></li>
+                                <li><a href="edit-student.html">Student Edit</a></li>
+                            </ul>
+                        </li>
+                       
+                        <li class="menu-title">
+                            <span>Gestion</span>
+                        </li>
+                        
+                        <li>
+                            <a th:href="@{/teacher/absences}"><i class="fas fa-table"></i> <span>Absences</span></a>
+                        </li>
+                        <li>
+                            <a href="library.html"><i class="fas fa-book"></i> <span>Demandes</span></a>
+                        </li>
+                        <li class="menu-title">
+                            <span>Autres</span>
+                        </li>
+                        <li>
+                            <a href="settings.html"><i class="fas fa-cog"></i> <span>Paramétres</span></a>
+                        </li>
+                         <li hidden="true">
+							<input type="hidden" id="teacher_id" th:value="${user.id}"/>	
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+            
+            <div sec:authorize="hasRole('STUDENT')" class="sidebar-inner slimscroll">
+                <div id="sidebar-menu" class="sidebar-menu">
+                    <ul>
+                        <li class="menu-title">
+                            <span>Menu Général</span>
+                        </li>
+                        <li class="submenu active">
+                            <a th:href="@{/student}"><i class="feather-grid"></i> <span> Dashboard</span></a>
+                        </li>
+                       
+                        <li class="menu-title">
+                            <span>Gestion</span>
+                        </li>
+                        
+                        <li>
+                            <a href="time-table.html"><i class="fas fa-table"></i> <span>Absences</span></a>
+                        </li>
+                      
+                        <li class="submenu">
+                            <a href="#"><i  class="fas fa-book"></i> <span> Demandes</span> 
+                            	<span class="menu-arrow"></span>
+                            </a>
+                            <ul>
+                                <li><a th:href="@{/cadre-administrator/students}">Effectuer une demande</a></li>
+                                <li><a href="student-details.html">Consulter mes demandes</a></li>
+                            </ul>
+                        </li>
+                        
                         <li class="menu-title">
                             <span>Autres</span>
                         </li>
@@ -275,11 +369,29 @@
 
     </div>
 
-    <script th:src="@{/assets/js/jquery-3.6.0.min.js}"></script>
+	 <!--Import jQuery-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <!--Data Table-->
+    <script type="text/javascript"  src=" https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript"  src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+    <!--Export table buttons-->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/pdfmake.min.js" ></script>
+    <script type="text/javascript"  src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.1/js/buttons.print.min.js"></script>
+
     <script th:src="@{/assets/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/assets/js/feather.min.js}"></script>
     <script th:src="@{/assets/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
-    <script th:src="@{/assets/js/script.js}"></script>
+    <script th:src="@{/assets/js/script.js}"></script>    
+    <script th:src="@{/assets/js/moment.min.js}"></script>
+	<script th:src="@{/assets/js/bootstrap-datetimepicker.min.js}"></script>
+	<script th:src="@{/assets/js/jquery-ui.min.js}"></script>
+	<script th:src="@{/assets/plugins/fullcalendar/fullcalendar.min.js}"></script>
+	<script th:src="@{/assets/plugins/fullcalendar/jquery.fullcalendar.js}"></script>
+	<script th:src="@{/assets/plugins/fullcalendar/teacher.fullcalendar.js}"></script>
+    
 </body>
 
 </html>

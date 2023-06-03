@@ -2,36 +2,40 @@ package com.project.absenceManagementSystem.entities;
 
 import java.util.Date;
 import java.util.List;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 public class Registration {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Boolean status;
 	private Date createdAt;
-	@OneToMany(cascade = CascadeType.ALL,mappedBy = "registration")
+	@OneToMany(mappedBy = "registration")
 	private List<Absence> absences;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "student_id",referencedColumnName = "id")
 	private Student student;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "level_id",referencedColumnName = "id")
 	private Level level;
 	
-	public Registration(Boolean status, Date createdAt, List<Absence> absences, Student student, Level level) {
+	public Registration() {
+		
+	}
+	
+	public Registration(Boolean status, Date createdAt, Level level) {
 		super();
 		this.status = status;
 		this.createdAt = createdAt;
-		this.absences = absences;
-		this.student = student;
 		this.level = level;
 	}
 

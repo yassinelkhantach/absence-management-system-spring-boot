@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/main}">
+<head>
+<meta charset="UTF-8">
+<title>AMS ENSAH | Edit Teacher</title>
+<script type="text/javascript" th:src="@{/js/teachers.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="page-header">
+			<div class="row align-items-center">
+				<div class="col-sm-12">
+					<div class="page-sub-header">
+						<h3 class="page-title"><i class="fas fa-edit me-1"></i> Modification des informations d'un professeur</h3>
+						<ul class="breadcrumb">
+							<li class="breadcrumb-item"><a th:href="@{/cadre-administrator/teachers}">Professeurs</a></li>
+							<li class="breadcrumb-item"><a th:href="@{/cadre-administrator/teachers}">Tous les professeurs</a></li>
+							<li class="breadcrumb-item active">Edit professeur</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div th:if="${success}" class="alert alert-success text-center" role="alert">
+			<span th:text="${success}"></span>
+		</div>
+		<div th:else th:if="${failed}" class="alert alert-success text-center" role="alert">
+			<span th:text="${failed}"></span>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card comman-shadow">
+					<div class="card-body">
+						<form th:action="@{/cadre-administrator/teacher/{id}/edit(id=${teacher.id})}" method="post" onchange="toggleButton()" onsubmit="validateForm(event)">
+							<div class="row">
+								<div class="col-12">
+									<h5 class="form-title student-info">
+										<span><i class="fas fa-info-circle me-1"></i> Informations personnelles</span>
+									</h5>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group local-forms">
+										<label for="firstNameFr">Prénom en français <span class="login-danger">*</span></label>
+										<input class="form-control" type="text" id="firstNameFr" th:field="*{teacher.firstName}">
+									    <span id="firstNameFrError" class="error-message"></span>
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group local-forms">
+										<label for="lastNameFr">Nom en français <span class="login-danger">*</span></label> <input
+											class="form-control" type="text" id="lastNameFr" th:field="*{teacher.lastName}">
+										<span id="lastNameFrError" class="error-message"></span>
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group local-forms">
+										<label for="firstNameAr">Prénom en arabe <span class="login-danger">*</span></label> <input
+											class="form-control" type="text" id="firstNameAr" th:field="*{teacher.firstNameAr}">
+										<span id="firstNameArError" class="error-message"></span>
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group local-forms">
+										<label for="lastNameAr">Nom en arabe <span class="login-danger">*</span></label> <input
+											class="form-control" type="text" id="lastNameAr" th:field="*{teacher.lastNameAr}">
+										<span id="lastNameArError" class="error-message"></span>
+									</div>
+								</div>
+						
+								<div class="col-12 col-sm-6">
+									<div class="form-group local-forms">
+										<label for="email">Email <span class="login-danger">*</span></label> <input
+											class="form-control" type="text" id="email" th:field="*{teacher.email}">
+										<span id="emailError" class="error-message"></span>
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group local-forms">
+										<label for="phone">Téléphone <span class="login-danger">*</span></label> 
+										<input class="form-control" type="text" id="phone" th:field="*{teacher.phone}">
+										<span id="phoneError" class="error-message"></span>
+									</div>
+								</div>
+							
+								<div class="col-12 col-sm-12">
+									<div class="form-group local-forms">
+										<label for="cin">CIN <span class="login-danger">*</span></label> 
+										<input class="form-control" type="text" id="cin" th:field="*{teacher.cin}">
+										<span id="cinError" class="error-message"></span>
+									</div>
+								</div>
+								
+								<div class="col-12">
+									<div class="student-submit text-center">
+										<button type="submit" id="edit-teacher-button" class="btn btn-primary w-100">Enregistrer les modifications</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

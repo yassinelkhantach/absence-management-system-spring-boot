@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/main}">
+<head>
+<meta charset="UTF-8">
+<title>AMS ENSAH | Absences</title>
+<style>
+#user-img {
+	height: 150px;
+	max-width: 150px;
+	width: 150px;
+	object-fit: cover;
+}
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div id="page-header" class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="page-sub-header">
+						<h3 class="page-title">
+							<i class="fas fa-info-circle me-1"></i> Consultation des fiches
+							des absences
+						</h3>
+						<ul class="breadcrumb">
+							<li class="breadcrumb-item"><a th:href="@{/}">Dashboard</a></li>
+							<li class="breadcrumb-item active">Absences</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div th:if="${success}" class="alert alert-success text-center" role="alert">
+			<span th:text="${success}"></span>
+		</div>
+		<div th:else th:if="${failed}" class="alert alert-success text-center" role="alert">
+			<span th:text="${failed}"></span>
+		</div>
+
+		<div class="row mb-3">
+			<div class="col-lg-12">
+				<div class="student-personals-grp">
+					<div class="card mb-0">
+						<div class="card-body">
+							<div class="heading-detail mb-3">
+								<h4>
+									<i class="fas fa-clipboard me-1"></i> Fiche d'absence
+								</h4>
+							</div>
+							<div class="mb-3 text-center">
+								<div class="row w-50 m-auto">
+									<div class="col"><span class="badge badge-light">Séance de cours</span></div>
+									<div class="col"><span class="badge badge-success">Séance de TD</span></div>
+									<div class="col"><span class="badge badge-info">Séance de TP</span></div>
+									<div class="col"><span class="badge badge-warning">Devoir surveillé</span></div>
+									<div class="col"><span class="badge badge-danger">Examen unifié</span></div>
+								</div>
+							</div>			
+							
+							<div id="note" hidden="true"></div>	
+
+							<div id="teacher-calendar"></div>
+
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Enregistrer une absence</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close" onclick="$('#myModal').modal('hide');">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					 <div class="modal-body text-center">
+				        <h4 class="text-muted" id="clickedDateTime"></h4>
+				     </div>
+					<div class="modal-body">
+						<form id="absence-form" th:action="@{/teacher/absences/add}" method="post" th:object="${absence}">
+														
+							<div hidden="true" class="form-group">
+								<label for="teacher" class="ms-1">Professeur <span class="login-danger">*</span></label>
+								<select th:field="*{teacher}" class="form-select" id="teacher">
+								  <option th:value="${user.id}"  th:text="${user.getFullName()}" selected></option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="student" class="ms-1">Etudiant <span class="login-danger">*</span></label>
+								<select th:field="*{registration}" class="form-select" id="select-student-element">
+								  	<option value="0" selected >Choisir un étudiant</option>
+								    <optgroup th:each="element : ${user.elements}" th:value="${element.id}" th:label="${element.label}">
+					                    <option th:each="registration : ${element.module.level.registrations}" 
+					                    	    th:value="${registration.id}" th:text="${registration.student.getFullName()}">
+					                    </option>
+					     	        </optgroup>
+								</select>
+								<input type="hidden" id="selectedOptgroup" th:field="*{element}" />
+								<input type="hidden" id="startDate" name="startDate" th:field="*{startString}">
+								
+							</div>
+							<div class="form-group">
+								<label for="teacher" class="ms-1">Séance <span class="login-danger">*</span></label>
+								<select  th:field="*{session}" class="form-select" id="teacher" aria-label="Default select example">
+								  	<option value="0" selected disabled>Choisir le type de séance</option>
+								  	<option th:each="sessionType : ${sessionTypes}"  th:value="${sessionType.id}"   th:text="${sessionType.label}"></option>
+								</select>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal" onclick="$('#myModal').modal('hide');">Annuler</button>
+						<button type="submit" form="absence-form" class="btn btn-primary">Enregistrer</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	
+	
+</body>
+</html>

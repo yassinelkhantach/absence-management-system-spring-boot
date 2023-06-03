@@ -88,4 +88,10 @@ public interface UserRepository extends JpaRepository<User, Long>{
     @Query("SELECT u FROM #{#entityName} u WHERE u.deletedAt IS NULL")
     public List<Teacher> findAllTeachers();
    
+    @Query("SELECT u FROM #{#entityName} u WHERE (CONCAT(u.firstName, ' ', u.lastName) LIKE ?1 OR CONCAT(u.firstNameAr, ' ', u.lastNameAr) LIKE ?1 OR u.email LIKE ?1 OR u.phone LIKE ?1) AND u.deletedAt IS NULL")
+    public List<Student> searchStudents(String query);
+   
+    @Query("SELECT u FROM #{#entityName} u WHERE (CONCAT(u.firstName, ' ', u.lastName) LIKE ?1 OR CONCAT(u.firstNameAr, ' ', u.lastNameAr) LIKE ?1 OR u.email LIKE ?1 OR u.phone LIKE ?1) AND u.deletedAt IS NULL")
+    public List<Teacher> searchTeachers(String query);
+   
 }

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.project.absenceManagementSystem.dto.UserRegistrationDto;
 import com.project.absenceManagementSystem.entities.Account;
 import com.project.absenceManagementSystem.entities.CadreAdministrator;
+import com.project.absenceManagementSystem.entities.Registration;
 import com.project.absenceManagementSystem.entities.Role;
 import com.project.absenceManagementSystem.entities.Student;
 import com.project.absenceManagementSystem.entities.Teacher;
@@ -47,10 +48,13 @@ public class UserServiceImpl implements UserService{
 		User user = null;
 		if(account.getRole().toLowerCase().equals("student")) {
 			try {
+				Registration reg = new Registration(false,new Date(), null);
 				user = new Student(registrationDto.getFirstName(),registrationDto.getLastName(),
 						registrationDto.getFirstNameAr(),registrationDto.getLastNameAr(),registrationDto.getPhone(),
 						registrationDto.getEmail(),null,registrationDto.getCin(),registrationDto.getCne(),
-						null,new SimpleDateFormat("yyyy-MM-dd").parse(registrationDto.getBirthdate()),Arrays.asList(new Role("ROLE_STUDENT")));
+						null,new SimpleDateFormat("yyyy-MM-dd").parse(registrationDto.getBirthdate()),Arrays.asList(new Role("ROLE_STUDENT")),Arrays.asList(reg));
+				//save registration of the user
+				reg.setStudent((Student)user);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -67,7 +71,8 @@ public class UserServiceImpl implements UserService{
 		}
 		user.setAccount(account);
 		account.setUser(user);
-		return userRepository.save(user);
+		user =  userRepository.save(user);
+		return user;
 	}
 
 	@Override

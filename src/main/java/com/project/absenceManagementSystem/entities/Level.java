@@ -15,13 +15,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "levels")
 public class Level {
-	public Filiere getFiliere() {
-		return filiere;
-	}
-
-	public void setFiliere(Filiere filiere) {
-		this.filiere = filiere;
-	}
+	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String label;
@@ -35,8 +29,10 @@ public class Level {
 	private List<Registration> registrations;
 
 	
-	
-	
+	public Level()
+	{
+		
+	}	
 	public Level(String label, String alias, Filiere filiere, List<Module> modules) {
 		super();
 		this.label = label;
@@ -79,6 +75,13 @@ public class Level {
 		this.registrations = registrations;
 	}
 	
+	public Filiere getFiliere() {
+		return filiere;
+	}
+
+	public void setFiliere(Filiere filiere) {
+		this.filiere = filiere;
+	}
 	
 	
 }
