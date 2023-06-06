@@ -86,6 +86,8 @@ public class UserEntityServiceImpl implements UserEntityService {
 	@Override
 	public Teacher updateTeacher(Long id, Teacher teacher) {
 		teacher.setId(id);
+		Teacher user = (Teacher) userRepository.findById(id).get();
+		teacher.setPicture(user.getPicture());
 		return userRepository.save(teacher);
 	}
 

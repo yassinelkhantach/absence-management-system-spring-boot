@@ -287,6 +287,8 @@ public class CadreAdministratorController {
 		
 		/*link a teacher to an element*/
 		if(element_ids != null) {
+			Teacher t = (Teacher) userService.getUserById(id).get();
+			t.getElements().forEach(element-> element.setTeacher(null));
 			for(Long element_id : element_ids) {
 				Element elem = userService.getElementById(element_id);
 				elem.setTeacher(teacher);

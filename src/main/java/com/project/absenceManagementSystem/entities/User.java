@@ -39,7 +39,7 @@ public class User {
     private Date createdAt = new Date();
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
 	private Account account;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(
 			name = "users_roles",
 			joinColumns = @JoinColumn(

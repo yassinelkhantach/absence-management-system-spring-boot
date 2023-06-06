@@ -36,12 +36,12 @@ $(document).ready(function() {
 	
 	if (teacher_id) {
 		
-		/*setTimeout(function() {
+		setTimeout(function() {
 		  $('#manual-guide').modal('show');
 		}, 1000);
 		$('#manual-guide').on('hidden.bs.modal', function () {
 		  $(this).remove(); // Remove the modal element from the DOM
-		});	*/
+		});	
 		
 		var updatedStart = null;
 		var updatedEnd = null;
@@ -66,6 +66,7 @@ $(document).ready(function() {
 						response.forEach(function(absenceData) {
 							var absence = {
 								id: absenceData.id,
+								name: absenceData.student_name,
 								title: `${absenceData.student_name} \n ${absenceData.element_label}`,
 								start: absenceData.start, // assuming your event data has 'start' and 'end' properties
 								end: absenceData.end,
@@ -147,11 +148,11 @@ $(document).ready(function() {
 					document.getElementById("note").hidden = false;
 					if (event.justified) {
 						document.getElementById("note").className = "m-auto w-50 bg-success mb-3 text-center text-white p-2 rounded"
-						document.getElementById("note").innerHTML = `<a class="text-white" href="/cadre-administrator/student/${event.student}/details"><b>${event.title}</b></a> le <b>${event.start.format('DD/MM/YYYY à HH:mm')}</b> : <b>Absence justifiée</b>`;
+						document.getElementById("note").innerHTML = `<a class="text-white" href="/cadre-administrator/student/${event.student}/details"><b>${event.name}</b></a> le <b>${event.start.format('DD/MM/YYYY à HH:mm')}</b> : <b>Absence justifiée</b>`;
 					}
 					else {
 						document.getElementById("note").className = "m-auto w-50 bg-danger mb-3 text-center text-white p-2 rounded"
-						document.getElementById("note").innerHTML = `<a class="text-white" href="/cadre-administrator/student/${event.student}/details"><b>${event.title}</b></a> le <b>${event.start.format('DD/MM/YYYY à HH:mm')}</b> : <b>Absence non justifiée</b>`;
+						document.getElementById("note").innerHTML = `<a class="text-white" href="/cadre-administrator/student/${event.student}/details"><b>${event.name}</b></a> le <b>${event.start.format('DD/MM/YYYY à HH:mm')}</b> : <b>Absence non justifiée</b>`;
 					}
 				});
 
@@ -213,7 +214,7 @@ $(document).ready(function() {
 						response.forEach(function(absenceData) {
 							var absence = {
 								id: absenceData.id,
-								title: absenceData.teacher_name,
+								title: `${absenceData.teacher_name} \n ${absenceData.element_label}`,
 								start: absenceData.start, // assuming your event data has 'start' and 'end' properties
 								end: absenceData.end,
 								className: colorClasses[absenceData.session],
