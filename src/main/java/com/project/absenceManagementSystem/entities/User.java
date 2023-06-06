@@ -34,6 +34,7 @@ public class User {
 	private String lastNameAr;
     private String phone;
     private String email;
+    private String picture;
     private Date deletedAt = null;
     private Date createdAt = new Date();
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
@@ -146,6 +147,14 @@ public class User {
 	
 	public String getFullName() {
 		return this.firstName+" "+this.getLastName();
+	}
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
 	}
 	
 	

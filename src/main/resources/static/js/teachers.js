@@ -1,13 +1,25 @@
-function deleteTeacher(event){
+function deleteTeacher(teacherId) {
 	if(confirm("Voulez-vous vraiment supprimer cet professeur ?")){
-		let teacherToDelete = document.getElementById("teacher-to-delete")
-		teacherToDelete.value = event.target.id;
-		if(teacherToDelete.value != null)	
-			return true
-		else
-			return false
-	}
-	return false;	
+    let teacherToDelete = document.getElementById("teacher-to-delete");
+    teacherToDelete.value = teacherId;
+    if (teacherToDelete.value != null)
+      return true;
+    else
+      return false;
+  }
+  return false;
+}
+
+function restoreTeacher(teacherId) {
+  if (confirm("Voulez-vous vraiment récupérer cet professeur ?")) {
+    let teacherToRestore = document.getElementById("teacher-to-restore");
+    teacherToRestore.value = teacherId;
+    if (teacherToRestore.value != null)
+      return true;
+    else
+      return false;
+  }
+  return false;
 }
 
 function validateForm(event) {
@@ -86,7 +98,8 @@ if(alert){
 }
 
 window.onload = () => {
-	document.getElementById("edit-teacher-button").disabled = true;
+	if(document.getElementById("edit-teacher-button"))
+		document.getElementById("edit-teacher-button").disabled = true;
 }
 	
 

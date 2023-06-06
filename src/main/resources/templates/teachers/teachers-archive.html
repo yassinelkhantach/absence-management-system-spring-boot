@@ -4,7 +4,7 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layouts/main}"><head>
 <meta charset="UTF-8">
-<title>AMS ENSAH | Teachers</title>
+<title>AMS ENSAH | Teachers Archive</title>
 <script type="text/javascript" th:src="@{/js/teachers.js}"></script>
 </head>
 <body>
@@ -13,10 +13,10 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="page-sub-header">
-						<h3 class="page-title"><i class="fas fa-graduation-cap"></i> Consulter tous les professeurs</h3>
+						<h3 class="page-title"><i class="fas fa-archive me-1"></i> Consulter l'archive des professeurs</h3>
 						<ul class="breadcrumb">
 							<li class="breadcrumb-item"><a th:href="@{/cadre-administrator/teachers}">Professeurs</a></li>
-							<li class="breadcrumb-item active">Tous les professeurs</li>
+							<li class="breadcrumb-item active">Archive des professeurs</li>
 						</ul>
 					</div>
 				</div>
@@ -26,7 +26,7 @@
 		<div class="student-group-form">
 			<div class="row">
 				<div class="col-lg-10 col-md-6">
-					<form id="search-form" th:action="@{/cadre-administrator/teachers}" method="get">
+					<form id="search-form" th:action="@{/cadre-administrator/teachers/archive}" method="get">
 						<div class="form-group">
 							<input type="text" class="form-control" name="query" th:value="${query}" placeholder="Search...." required/>
 						</div>
@@ -48,7 +48,7 @@
 						<div class="page-header">
 							<div class="row align-items-center">
 								<div class="col">
-									<h3 class="page-title"><i class="fas fa-clipboard me-1"></i> Liste des professeurs</h3>
+									<h3 class="page-title"><i class="fas fa-clipboard me-1"></i> Liste des professeurs archivés</h3>
 								</div>
 								<div class="col-auto text-end float-end ms-auto download-grp">
 									<a th:href="@{/cadre-administrator/teacher/add}" class="btn btn-primary"><i
@@ -59,8 +59,8 @@
 						</div>
 						
 						
-						<form th:action="@{/cadre-administrator/teachers/delete}" method="post" th:id="delete-teacher" hidden="true">
-							<input type="hidden" id="teacher-to-delete" name="id">
+						<form th:action="@{/cadre-administrator/teachers/restore}" method="post" th:id="restore-teacher" hidden="true">
+							<input type="hidden" id="teacher-to-restore" name="id">
 						</form>
 						
 						<div th:if="${success}" class="alert alert-success text-center" role="alert">
@@ -89,12 +89,7 @@
 										<td th:text="${teacher.id}"></td>
 										<td>
 											<h2 class="table-avatar">
-												<a class="avatar avatar-sm me-2" th:href="@{/cadre-administrator/teacher/{id}/details(id=${teacher.id})}">
-                                                  	<img class="rounded-circle"
-                                                      th:src="@{${teacher.picture} ? ${teacher.picture} : '/assets/img/profiles/unknown.png' }" width="25"
-                                                      alt="Teacher">
-                                              	</a>
-												<a th:text="${teacher.fullName}"></a>
+												<a th:text="${teacher.firstName+' '+teacher.lastName}"></a>
 											</h2>
 										</td>
 										<td th:text="${teacher.firstNameAr+' '+teacher.lastNameAr}"></td>
@@ -103,20 +98,12 @@
 										<td th:text="${teacher.cin}"></td>
 										<td class="text-end">
 											<div class="actions">
-												<a th:href="@{/cadre-administrator/teacher/{id}/details(id=${teacher.id})}"
-													class="btn btn-sm bg-success-light me-2"> <i
-													class="feather-eye"></i>
-												</a> 
-												<a th:href="@{/cadre-administrator/teacher/{id}/edit(id=${teacher.id})}"
-													class="btn btn-sm bg-danger-light"> <i
-													class="feather-edit"></i>
-												</a> 
 												<button type="submit"
 													th:id="${teacher.id}"
-													form="delete-teacher"
-													th:onclick="'return deleteTeacher(' + ${teacher.id} + ')'"
+													form="restore-teacher"
+													th:onclick="'return restoreTeacher(' + ${teacher.id} + ')'"
 													class="btn btn-sm bg-success-light me-2"> <i
-													class="feather-trash"></i>
+													class="feather-external-link"></i>
 												</button>
 											</div>
 										</td>

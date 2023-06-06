@@ -59,7 +59,7 @@
 						</div>
 						
 						<form th:action="@{/cadre-administrator/students/delete}" method="post" th:id="delete-student" hidden="true">
-							<input type="hidden" id="studentToDelete" name="id">
+							<input type="hidden" id="student-to-delete" name="id">
 						</form>
 						
 						<div th:if="${success}" class="alert alert-success text-center" role="alert">
@@ -90,7 +90,12 @@
 										<td th:text="${student.id}"></td>
 										<td>
 											<h2 class="table-avatar">
-												<a th:text="${student.firstName+' '+student.lastName}"></a>
+												<a class="avatar avatar-sm me-2" th:href="@{/cadre-administrator/student/{id}/details(id=${student.id})}">
+                                                  	<img class="rounded-circle"
+                                                      th:src="@{${student.picture} ? ${student.picture} : '/assets/img/profiles/unknown.png' }" width="25"
+                                                      alt="Star Students">
+                                              	</a>
+												<a th:text="${student.fullName}"></a>
 											</h2>
 										</td>
 										<td th:text="${student.firstNameAr+' '+student.lastNameAr}"></td>
@@ -112,7 +117,7 @@
 												<button type="submit"
 													th:id="${student.id}"
 													form="delete-student"
-													onclick="return deleteStudent(event)"
+													th:onclick="'return deleteStudent(' + ${student.id} + ')'"
 													class="btn btn-sm bg-success-light me-2"> <i
 													class="feather-trash"></i>
 												</button>

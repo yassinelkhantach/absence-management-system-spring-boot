@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
 	// Useful fnctions
 	function getFormattedDateTime(date, hours, minutes) {
 		var formattedDate = moment(date).format('YYYY-MM-DD');
@@ -12,11 +11,19 @@ $(document).ready(function() {
 		return regex.test(url);
 	}
 	
-	var teacher_id = document.getElementById("teacher_id").value;
-
+	
+	
 
 	if (checkUrlForPattern(window.location.href)) {
-
+		var teacher_id = document.getElementById("teacher_id").value;
+		//Load the manual guide modal first
+		/*setTimeout(function() {
+		  $('#manual-guide').modal('show');
+		}, 1000);
+		$('#manual-guide').on('hidden.bs.modal', function () {
+		  $(this).remove(); // Remove the modal element from the DOM
+		});*/
+		
 		var mySelect = document.getElementById("select-student-element");
 		var selectedOptgroupInput = document.getElementById("selectedOptgroup");
 
@@ -61,7 +68,7 @@ $(document).ready(function() {
 						response.forEach(function(absenceData) {
 							var absence = {
 								id: absenceData.id,
-								title: absenceData.student_name,
+								title: `${absenceData.student_name}<b>${absenceData.element_label}`,
 								start: absenceData.start, // assuming your event data has 'start' and 'end' properties
 								end: absenceData.end,
 								className: colorClasses[absenceData.session],

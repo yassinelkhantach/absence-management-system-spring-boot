@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-
+	
 	function getFormattedDateTime(date, hours, minutes) {
 		var formattedDate = moment(date).format('YYYY-MM-DD');
 		var formattedTime = moment().set('hour', hours).set('minute', minutes).format('HH:mm');
@@ -33,9 +33,19 @@ $(document).ready(function() {
 		5: 'bg-danger',
 	};
 
+	
 	if (teacher_id) {
+		
+		/*setTimeout(function() {
+		  $('#manual-guide').modal('show');
+		}, 1000);
+		$('#manual-guide').on('hidden.bs.modal', function () {
+		  $(this).remove(); // Remove the modal element from the DOM
+		});	*/
+		
 		var updatedStart = null;
 		var updatedEnd = null;
+
 
 		$('#calendar').fullCalendar({
 			header: {
@@ -56,7 +66,7 @@ $(document).ready(function() {
 						response.forEach(function(absenceData) {
 							var absence = {
 								id: absenceData.id,
-								title: absenceData.student_name,
+								title: `${absenceData.student_name} \n ${absenceData.element_label}`,
 								start: absenceData.start, // assuming your event data has 'start' and 'end' properties
 								end: absenceData.end,
 								className: colorClasses[absenceData.session],

@@ -51,13 +51,22 @@ public class UserEntityServiceImpl implements UserEntityService {
 	public List<Teacher> getAllTeachers() {
 		return userRepository.findAllTeachers();
 	}
+	
+	@Override
+	public List<Teacher> getTrashedTeachers() {
+		return userRepository.findOnlyTrashedTeachers();
+	}
 
 	@Override
-	public Student updatePicture(Long id, String picture) {
-		Student student = (Student) userRepository.findById(id).get();
-		student.setPicture(picture);
+	public List<Student> getTrashedStudents() {
+		return userRepository.findOnlyTrashedStudents();
+	}
 
-		return userRepository.save(student);
+	@Override
+	public User updatePicture(Long id, String picture) {
+		User user = userRepository.findById(id).get();
+		user.setPicture(picture);
+		return userRepository.save(user);
 	}
 	
 	@Override
@@ -94,6 +103,16 @@ public class UserEntityServiceImpl implements UserEntityService {
 	@Override
 	public List<Teacher> searchTeachers(String query) {
 		return userRepository.searchTeachers("%"+query+"%");
+	}
+
+	@Override
+	public List<Student> searchOnlyTrashedStudents(String query) {
+		return userRepository.searchOnlyTrashedStudents("%"+query+"%");
+	}
+
+	@Override
+	public List<Teacher> searchOnlyTrashedTeachers(String query) {
+		return userRepository.searchOnlyTrashedTeachers("%"+query+"%");
 	}
 	
 	@Override
@@ -135,7 +154,18 @@ public class UserEntityServiceImpl implements UserEntityService {
 		return sessionTypeRepository.findById(id).orElse(null);
 	}
 
-	
+	@Override
+	public Boolean restoreUser(Long id) {
+		if(userRepository.restore(id) != null)
+			return true;
+		return false;
+	}
+
+	@Override
+	public Element updateElement(Long id, Element element) {
+		element.setId(id);
+		return elementRepository.save(element);
+	}	
 
 
 

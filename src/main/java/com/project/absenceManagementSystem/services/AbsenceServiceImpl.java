@@ -48,4 +48,9 @@ public class AbsenceServiceImpl implements AbsenceService{
 		return absenceRepository.findById(id).orElse(null);
 	}
 
+	@Override
+	public List<Absence> getAllAbsences() {
+		return absenceRepository.findAll();
+	}
+
 }

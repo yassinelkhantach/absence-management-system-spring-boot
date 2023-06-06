@@ -12,7 +12,6 @@ import jakarta.persistence.Table;
 public class CadreAdministrator extends User{
 	
     private String grade;
-
     public CadreAdministrator() {
     	
     }
@@ -30,5 +29,5 @@ public class CadreAdministrator extends User{
 	public void setGrade(String grade) {
 		this.grade = grade;
 	}
-	
+
 }

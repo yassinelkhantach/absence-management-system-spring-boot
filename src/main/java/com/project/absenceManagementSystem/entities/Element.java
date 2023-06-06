@@ -69,6 +69,11 @@ public class Element {
 	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
 	}
+	@Override
+	public String toString() {
+		return "Element [id=" + id + ", label=" + label + ", module=" + module + ", absences=" + absences + ", teacher="
+				+ teacher + "]";
+	}
 	
 	
 

@@ -88,10 +88,28 @@ public interface UserRepository extends JpaRepository<User, Long>{
     @Query("SELECT u FROM #{#entityName} u WHERE u.deletedAt IS NULL")
     public List<Teacher> findAllTeachers();
    
+    @Query("SELECT u FROM #{#entityName} u WHERE u.deletedAt IS NOT NULL")
+    public List<Teacher> findOnlyTrashedTeachers();
+    
+    @Query("SELECT u FROM #{#entityName} u WHERE u.deletedAt IS NOT NULL")
+    public List<Student> findOnlyTrashedStudents();
+   
     @Query("SELECT u FROM #{#entityName} u WHERE (CONCAT(u.firstName, ' ', u.lastName) LIKE ?1 OR CONCAT(u.firstNameAr, ' ', u.lastNameAr) LIKE ?1 OR u.email LIKE ?1 OR u.phone LIKE ?1) AND u.deletedAt IS NULL")
     public List<Student> searchStudents(String query);
    
     @Query("SELECT u FROM #{#entityName} u WHERE (CONCAT(u.firstName, ' ', u.lastName) LIKE ?1 OR CONCAT(u.firstNameAr, ' ', u.lastNameAr) LIKE ?1 OR u.email LIKE ?1 OR u.phone LIKE ?1) AND u.deletedAt IS NULL")
     public List<Teacher> searchTeachers(String query);
+    
+    @Query("SELECT u FROM #{#entityName} u WHERE (CONCAT(u.firstName, ' ', u.lastName) LIKE ?1 OR CONCAT(u.firstNameAr, ' ', u.lastNameAr) LIKE ?1 OR u.email LIKE ?1 OR u.phone LIKE ?1) AND u.deletedAt IS NOT NULL")
+    public List<Student> searchOnlyTrashedStudents(String query);
+   
+    @Query("SELECT u FROM #{#entityName} u WHERE (CONCAT(u.firstName, ' ', u.lastName) LIKE ?1 OR CONCAT(u.firstNameAr, ' ', u.lastNameAr) LIKE ?1 OR u.email LIKE ?1 OR u.phone LIKE ?1) AND u.deletedAt IS NOT NULL")
+    public List<Teacher> searchOnlyTrashedTeachers(String query);
+    
+    @Transactional
+    @Modifying
+    @Query("UPDATE #{#entityName} u SET u.deletedAt = NULL WHERE id = ?1")
+    public Integer restore(Long id);
+    
    
 }

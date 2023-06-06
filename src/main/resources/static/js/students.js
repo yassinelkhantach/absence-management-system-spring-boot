@@ -1,13 +1,25 @@
-function deleteStudent(event){
+function deleteStudent(studentId) {
 	if(confirm("Voulez-vous vraiment supprimer cet étudiant ?")){
-		let studentToDelete = document.getElementById("studentToDelete")
-		studentToDelete.value = event.target.id;
-		if(studentToDelete.value != null)	
-			return true
-		else
-			return false
-	}
-	return false;	
+    let teacherToDelete = document.getElementById("student-to-delete");
+    teacherToDelete.value = studentId;
+    if (teacherToDelete.value != null)
+      return true;
+    else
+      return false;
+  }
+  return false;
+}
+
+function restoreStudent(studentId) {
+  if (confirm("Voulez-vous vraiment récupérer cet étudiant ?")) {
+    let teacherToRestore = document.getElementById("student-to-restore");
+    teacherToRestore.value = studentId;
+    if (teacherToRestore.value != null)
+      return true;
+    else
+      return false;
+  }
+  return false;
 }
 
 function validateForm(event) {

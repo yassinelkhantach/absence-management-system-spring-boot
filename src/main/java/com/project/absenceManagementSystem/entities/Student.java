@@ -21,7 +21,6 @@ public class Student extends User{
 	
 	private String cne;
     private String cin;
-    private String picture;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "student")
@@ -41,7 +40,6 @@ public class Student extends User{
 		super(firstName, lastName, firstNameAr, lastNameAr, phone, email, account, roles);
 		this.cne = cne;
 		this.cin = cin;
-		this.picture = picture;
 		this.birthDate = birthDate;
 		this.registrations = registrations;
 	}
@@ -60,14 +58,6 @@ public class Student extends User{
 
 	public void setCin(String cin) {
 		this.cin = cin;
-	}
-
-	public String getPicture() {
-		return picture;
-	}
-
-	public void setPicture(String picture) {
-		this.picture = picture;
 	}
 
 	public Date getBirthDate() {

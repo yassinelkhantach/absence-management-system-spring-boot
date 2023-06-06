@@ -112,6 +112,19 @@
 										<span id="birthDateError" class="error-message"></span>
 									</div>
 								</div>
+								
+								<div class="col-12 col-sm-12">
+									<div class="form-group local-forms">
+										<label for="level">Niveau</label> 
+										<select class="form-select" name="level" id="level">
+											<option value="0" selected disabled >Choisir un niveau</option>
+											<optgroup th:each="filiere : ${filieres}" th:label="${filiere.label}">
+												<option th:each="level : ${filiere.levels}"  th:value="${level.id}" th:selected="${level.id}==${student?.registrations[0]?.level?.id}" th:text="${level.label}"></option>
+											</optgroup>
+										</select>
+									</div>
+								</div>
+								
 								<div class="col-12 col-sm-12 mb-3">
 									<div class="form-check form-switch">
 									  <input class="form-check-input" type="checkbox" id="registration-status" th:field="*{student.registrations[0].status}" />

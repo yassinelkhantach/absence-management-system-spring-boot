@@ -95,6 +95,21 @@
 									</div>
 								</div>
 								
+								<div class="col-12 col-sm-12">
+									<div class="form-group local-forms">
+										<label for="element">Affecter à un ou plusieurs éléments pédagogique <span class="login-danger">*</span></label>
+										<select size="4" multiple="multiple" class="form-select py-3" name="element" id="element">
+											<optgroup th:each="module : ${modules}"
+												th:label="${module.level.filiere.label+' - '+module.level.alias}">
+												<option th:each="element : ${module.elements}"
+													th:value="${element.id}"
+													th:text="${element.label}">
+												</option>
+											</optgroup>
+										</select>
+									</div>
+								</div>
+								
 								<div class="col-12">
 									<div class="student-submit text-center">
 										<button type="submit" id="edit-teacher-button" class="btn btn-primary w-100">Ajouter</button>

@@ -11,5 +11,6 @@ public interface AbsenceService {
 	Absence deleteAbsence(Long id);
 	List<Absence> getAbsencesByRegistration(Long id);
 	List<Absence> getAbsencesByTeacher(Long id);
+	List<Absence> getAllAbsences();
 
 }

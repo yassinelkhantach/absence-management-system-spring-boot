@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/main}">
+<head>
+<meta charset="UTF-8">
+<title>AMS ENSAH | Filiere</title>
+<script type="text/javascript" th:src="@{/js/students.js}"></script>
+<style type="text/css">
+.bullet-list li:before {
+	content: "\2022";
+	color: #000;
+	display: inline-block;
+	width: 1em;
+}
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="page-sub-header">
+						<h3 class="page-title">
+							<i class="fas fa-graduation-cap"></i> Filière <span
+								th:text="${filiere.label}"></span>
+						</h3>
+						<ul class="breadcrumb">
+							<li class="breadcrumb-item"><a th:href="@{/}">Dashboard</a></li>
+							<li class="breadcrumb-item active" th:text="${filiere.label}"></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card card-table">
+					<div class="card-body">
+
+						<div class="page-header">
+							<div class="row align-items-center">
+								<div class="col">
+									<h3 class="page-title">
+										<i class="fas fa-clipboard me-1"></i> Liste des niveaux de la
+										filière <b th:text="${filiere.label}"></b>
+									</h3>
+								</div>
+								<div class="col-auto text-end float-end ms-auto download-grp">
+									<a th:href="@{/cadre-administrator/student/add}"
+										class="btn btn-primary"><i class="fas fa-plus"></i> </a>
+								</div>
+							</div>
+						</div>
+
+
+						<div th:if="${success}" class="alert alert-success text-center"
+							role="alert">
+							<span th:text="${success}"></span>
+						</div>
+						<div th:else th:if="${failed}"
+							class="alert alert-danger text-center" role="alert">
+							<span th:text="${failed}"></span>
+						</div>
+
+						<div class="table-responsive">
+							<table
+								class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
+								<thead class="student-thread">
+									<tr>
+										<th>ID</th>
+										<th>Alias du niveau</th>
+										<th>Label du niveau</th>
+										<th>Modules & éléments enseignées</th>
+										<th>Liste des étudiants</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="level: ${filiere.levels}"
+										th:class="(${levelChoosen} != null and ${levelChoosen.id} == ${level.id}) ? 'bg-light' : ''">
+										<td th:text="${level.id}"></td>
+										<td th:text="${level.alias}"></td>
+										<td th:text="${level.label}"></td>
+										<td>
+											<div th:each="module : ${level.modules}">
+												<ul class="bullet-list">
+													<li class="text-dark fw-bold" th:text="${module.label}"></li>
+													<ul class="ms-4">
+														<li th:each="element : ${module.elements}"
+															th:text="${element.label}"></li>
+													</ul>
+												</ul>
+											</div>
+										</td>
+										<td>
+											<div class="text-center">
+												<a
+													th:href="@{/cadre-administrator/filiere/{id}/details?level={level_id}(id=${filiere.id},level_id=${level.id})}"
+													class="btn btn-sm bg-success-light me-2"> <i
+													class="feather-eye"></i>
+												</a>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row" th:if="${levelChoosen} != null">
+			<div class="col-lg-12">
+				<div class="student-personals-grp">
+					<div class="card mb-0">
+						<div class="card-body">
+							<div class="page-header">
+								<div class="row align-items-center">
+									<div class="col">
+										<h3 class="page-title">
+											<i class="fas fa-clipboard me-1"></i> Liste des étudiants du niveau
+											<b th:text="${levelChoosen.alias}"></b>
+										</h3>
+									</div>
+								</div>
+							</div>
+
+							<div class="table-responsive">
+								<table
+									class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
+									<thead class="student-thread">
+										<tr>
+											<th>ID</th>
+											<th>Nom en français</th>
+											<th>Nom en arabe</th>
+											<th>Email</th>
+											<th>Téléphone</th>
+											<th>Date de naissance</th>
+											<th>CNE</th>
+											<th>CIN</th>
+											<th>Consulter</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="registration : ${levelChoosen.registrations}">
+											<td th:text="${registration.student.id}"></td>
+											<td>
+												<h2 class="table-avatar">
+													<a class="avatar avatar-sm me-2" th:href="@{/cadre-administrator/student/{id}/details(id=${registration.student.id})}">
+	                                                  	<img class="rounded-circle"
+	                                                      th:src="@{${registration.student.picture} ? ${registration.student.picture} : '/assets/img/profiles/unknown.png' }" width="25"
+	                                                      alt="Star Students">
+	                                              	</a>
+													<a th:text="${registration.student.fullName}"></a>
+												</h2>
+											</td>
+											<td
+												th:text="${registration.student.firstNameAr+' '+registration.student.lastNameAr}"></td>
+											<td th:text="${registration.student.email}"></td>
+											<td th:text="${registration.student.phone}"></td>
+											<td
+												th:text="${#dates.format(registration.student.birthDate,'dd/MM/yyyy')}"></td>
+											<td th:text="${registration.student.cne}"></td>
+											<td th:text="${registration.student.cin}"></td>
+											<td class="text-end">
+												<div class="text-center">
+													<a
+														th:href="@{/cadre-administrator/student/{id}/details(id=${registration.student.id})}"
+														class="btn btn-sm bg-success-light me-2"> <i
+														class="feather-eye"></i>
+													</a>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+
+</body>
+</html>

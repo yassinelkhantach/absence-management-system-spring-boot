@@ -2,10 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org" 
 	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layouts/main}"><head>
+	  layout:decorate="~{layouts/main}">
+<head>
 <meta charset="UTF-8">
-<title>AMS ENSAH | Teachers</title>
-<script type="text/javascript" th:src="@{/js/teachers.js}"></script>
+<title>AMS ENSAH | Students Archive</title>
+<script type="text/javascript" th:src="@{/js/students.js}"></script>
 </head>
 <body>
 	<div layout:fragment="content">
@@ -13,10 +14,10 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="page-sub-header">
-						<h3 class="page-title"><i class="fas fa-graduation-cap"></i> Consulter tous les professeurs</h3>
+						<h3 class="page-title"><i class="fas fa-archive me-1"></i> Consulter l'archive des étudiants</h3>
 						<ul class="breadcrumb">
-							<li class="breadcrumb-item"><a th:href="@{/cadre-administrator/teachers}">Professeurs</a></li>
-							<li class="breadcrumb-item active">Tous les professeurs</li>
+							<li class="breadcrumb-item"><a th:href="@{/cadre-administrator/students}">Etudiants</a></li>
+							<li class="breadcrumb-item active">Archive des étudiants</li>
 						</ul>
 					</div>
 				</div>
@@ -26,7 +27,7 @@
 		<div class="student-group-form">
 			<div class="row">
 				<div class="col-lg-10 col-md-6">
-					<form id="search-form" th:action="@{/cadre-administrator/teachers}" method="get">
+					<form id="search-form" th:action="@{/cadre-administrator/students/archive}" method="get">
 						<div class="form-group">
 							<input type="text" class="form-control" name="query" th:value="${query}" placeholder="Search...." required/>
 						</div>
@@ -39,7 +40,6 @@
 				</div>
 			</div>
 		</div>
-		
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="card card-table">
@@ -48,19 +48,18 @@
 						<div class="page-header">
 							<div class="row align-items-center">
 								<div class="col">
-									<h3 class="page-title"><i class="fas fa-clipboard me-1"></i> Liste des professeurs</h3>
+									<h3 class="page-title"><i class="fas fa-clipboard me-1"></i> Liste des étudiants archivés</h3>
 								</div>
 								<div class="col-auto text-end float-end ms-auto download-grp">
-									<a th:href="@{/cadre-administrator/teacher/add}" class="btn btn-primary"><i
+									<a th:href="@{/cadre-administrator/student/add}" class="btn btn-primary"><i
 										class="fas fa-plus"></i>
 									</a>
 								</div>
 							</div>
 						</div>
 						
-						
-						<form th:action="@{/cadre-administrator/teachers/delete}" method="post" th:id="delete-teacher" hidden="true">
-							<input type="hidden" id="teacher-to-delete" name="id">
+						<form th:action="@{/cadre-administrator/students/restore}" method="post" th:id="restore-student" hidden="true">
+							<input type="hidden" id="student-to-restore" name="id">
 						</form>
 						
 						<div th:if="${success}" class="alert alert-success text-center" role="alert">
@@ -69,7 +68,7 @@
 						<div th:else th:if="${failed}" class="alert alert-danger text-center" role="alert">
 							<span th:text="${failed}"></span>
 						</div>
-
+						
 						<div class="table-responsive">
 							<table
 								class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
@@ -80,43 +79,34 @@
 										<th>Nom en arabe</th>
 										<th>Email</th>
 										<th>Téléphone</th>
+										<th>Date de naissance</th>
+										<th>CNE</th>
 										<th>CIN</th>
 										<th class="text-end">Action</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="teacher: ${teachers}">
-										<td th:text="${teacher.id}"></td>
+									<tr th:each="student: ${students}">
+										<td th:text="${student.id}"></td>
 										<td>
 											<h2 class="table-avatar">
-												<a class="avatar avatar-sm me-2" th:href="@{/cadre-administrator/teacher/{id}/details(id=${teacher.id})}">
-                                                  	<img class="rounded-circle"
-                                                      th:src="@{${teacher.picture} ? ${teacher.picture} : '/assets/img/profiles/unknown.png' }" width="25"
-                                                      alt="Teacher">
-                                              	</a>
-												<a th:text="${teacher.fullName}"></a>
+												<a th:text="${student.firstName+' '+student.lastName}"></a>
 											</h2>
 										</td>
-										<td th:text="${teacher.firstNameAr+' '+teacher.lastNameAr}"></td>
-										<td th:text="${teacher.email}"></td>
-										<td th:text="${teacher.phone}"></td>
-										<td th:text="${teacher.cin}"></td>
+										<td th:text="${student.firstNameAr+' '+student.lastNameAr}"></td>
+										<td th:text="${student.email}"></td>
+										<td th:text="${student.phone}"></td>
+										<td th:text="${#dates.format(student.birthDate,'dd/MM/yyyy')}"></td>
+										<td th:text="${student.cne}"></td>
+										<td th:text="${student.cin}"></td>
 										<td class="text-end">
-											<div class="actions">
-												<a th:href="@{/cadre-administrator/teacher/{id}/details(id=${teacher.id})}"
-													class="btn btn-sm bg-success-light me-2"> <i
-													class="feather-eye"></i>
-												</a> 
-												<a th:href="@{/cadre-administrator/teacher/{id}/edit(id=${teacher.id})}"
-													class="btn btn-sm bg-danger-light"> <i
-													class="feather-edit"></i>
-												</a> 
+											<div class="actions"> 
 												<button type="submit"
-													th:id="${teacher.id}"
-													form="delete-teacher"
-													th:onclick="'return deleteTeacher(' + ${teacher.id} + ')'"
+													th:id="${student.id}"
+													form="restore-student"
+													th:onclick="'return restoreStudent(' + ${student.id} + ')'"
 													class="btn btn-sm bg-success-light me-2"> <i
-													class="feather-trash"></i>
+													class="feather-external-link"></i>
 												</button>
 											</div>
 										</td>
@@ -129,5 +119,6 @@
 			</div>
 		</div>
 	</div>
+	
 </body>
 </html>

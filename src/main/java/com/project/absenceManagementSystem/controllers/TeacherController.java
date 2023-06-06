@@ -52,6 +52,7 @@ public class TeacherController {
 	public String home(Model model ,Authentication auth) {
 		model.addAttribute("user",userEntityService.getUserByEmail(auth.getName()).get());
 		model.addAttribute("sessionTypes",userEntityService.getSessionTypes());
+		model.addAttribute("currentPage","absences");
 		return "teachers/teacher";	
 	}
 	

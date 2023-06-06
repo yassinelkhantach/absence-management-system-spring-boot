@@ -18,6 +18,7 @@ public class AdministratorController {
 	@GetMapping
 	public String home(Model model ,Authentication auth){
 		model.addAttribute("user",userService.getUserByEmail(auth.getName()).get());
+		model.addAttribute("currentPage","dashboard");
 		return "index";
 	}
 }

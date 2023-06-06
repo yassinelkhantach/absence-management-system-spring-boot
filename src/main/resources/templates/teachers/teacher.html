@@ -33,11 +33,13 @@
 				</div>
 			</div>
 		</div>
-		
-		<div th:if="${success}" class="alert alert-success text-center" role="alert">
+
+		<div th:if="${success}" class="alert alert-success text-center"
+			role="alert">
 			<span th:text="${success}"></span>
 		</div>
-		<div th:else th:if="${failed}" class="alert alert-success text-center" role="alert">
+		<div th:else th:if="${failed}" class="alert alert-success text-center"
+			role="alert">
 			<span th:text="${failed}"></span>
 		</div>
 
@@ -53,67 +55,88 @@
 							</div>
 							<div class="mb-3 text-center">
 								<div class="row w-50 m-auto">
-									<div class="col"><span class="badge badge-light">Séance de cours</span></div>
-									<div class="col"><span class="badge badge-success">Séance de TD</span></div>
-									<div class="col"><span class="badge badge-info">Séance de TP</span></div>
-									<div class="col"><span class="badge badge-warning">Devoir surveillé</span></div>
-									<div class="col"><span class="badge badge-danger">Examen unifié</span></div>
+									<div class="col">
+										<span class="badge badge-light">Séance de cours</span>
+									</div>
+									<div class="col">
+										<span class="badge badge-success">Séance de TD</span>
+									</div>
+									<div class="col">
+										<span class="badge badge-info">Séance de TP</span>
+									</div>
+									<div class="col">
+										<span class="badge badge-warning">Devoir surveillé</span>
+									</div>
+									<div class="col">
+										<span class="badge badge-danger">Examen unifié</span>
+									</div>
 								</div>
-							</div>			
-							
-							<div id="note" hidden="true"></div>	
+							</div>
+
+							<div id="note" hidden="true"></div>
 
 							<div id="teacher-calendar"></div>
 
 						</div>
-						
+
 					</div>
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Enregistrer une absence</h5>
+						<h5 class="modal-title" id="exampleModalLabel">Enregistrer
+							une absence</h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close" onclick="$('#myModal').modal('hide');">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					 <div class="modal-body text-center">
-				        <h4 class="text-muted" id="clickedDateTime"></h4>
-				     </div>
+					<div class="modal-body text-center">
+						<h4 class="text-muted" id="clickedDateTime"></h4>
+					</div>
 					<div class="modal-body">
-						<form id="absence-form" th:action="@{/teacher/absences/add}" method="post" th:object="${absence}">
-														
+						<form id="absence-form" th:action="@{/teacher/absences/add}"
+							method="post" th:object="${absence}">
+
 							<div hidden="true" class="form-group">
-								<label for="teacher" class="ms-1">Professeur <span class="login-danger">*</span></label>
-								<select th:field="*{teacher}" class="form-select" id="teacher">
-								  <option th:value="${user.id}"  th:text="${user.getFullName()}" selected></option>
+								<label for="teacher" class="ms-1">Professeur <span
+									class="login-danger">*</span></label> <select th:field="*{teacher}"
+									class="form-select" id="teacher">
+									<option th:value="${user.id}" th:text="${user.getFullName()}"
+										selected></option>
 								</select>
 							</div>
 							<div class="form-group">
-								<label for="student" class="ms-1">Etudiant <span class="login-danger">*</span></label>
-								<select th:field="*{registration}" class="form-select" id="select-student-element">
-								  	<option value="0" selected >Choisir un étudiant</option>
-								    <optgroup th:each="element : ${user.elements}" th:value="${element.id}" th:label="${element.label}">
-					                    <option th:each="registration : ${element.module.level.registrations}" 
-					                    	    th:value="${registration.id}" th:text="${registration.student.getFullName()}">
-					                    </option>
-					     	        </optgroup>
-								</select>
-								<input type="hidden" id="selectedOptgroup" th:field="*{element}" />
-								<input type="hidden" id="startDate" name="startDate" th:field="*{startString}">
-								
+								<label for="student" class="ms-1">Etudiant <span
+									class="login-danger">*</span></label> <select
+									name="registrations" class="form-select"
+									id="select-student-element">
+									<optgroup th:each="element : ${user.elements}"
+										th:value="${element.id}" th:label="${element.label}">
+										<option
+											th:each="registration : ${element.module.level.registrations}"
+											th:value="${registration.id}"
+											th:text="${registration.student.getFullName()}"></option>
+									</optgroup>
+								</select> <input type="hidden" id="selectedOptgroup"
+									th:field="*{element}" /> <input type="hidden" id="startDate"
+									name="startDate" th:field="*{startString}">
+
 							</div>
 							<div class="form-group">
-								<label for="teacher" class="ms-1">Séance <span class="login-danger">*</span></label>
-								<select  th:field="*{session}" class="form-select" id="teacher" aria-label="Default select example">
-								  	<option value="0" selected disabled>Choisir le type de séance</option>
-								  	<option th:each="sessionType : ${sessionTypes}"  th:value="${sessionType.id}"   th:text="${sessionType.label}"></option>
+								<label for="teacher" class="ms-1">Séance <span
+									class="login-danger">*</span></label> <select th:field="*{session}"
+									class="form-select" id="teacher"
+									aria-label="Default select example">
+									<option value="0" selected disabled>Choisir le type de
+										séance</option>
+									<option th:each="sessionType : ${sessionTypes}"
+										th:value="${sessionType.id}" th:text="${sessionType.label}"></option>
 								</select>
 							</div>
 						</form>
@@ -127,8 +150,43 @@
 			</div>
 		</div>
 
+		<div class="modal fade" id="manual-guide" tabindex="-1" role="dialog"
+			aria-hidden="false">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header text-center">
+						<h5 class="modal-title">
+							<i class="fas fa-flag-checkered"></i> Guide d'utilisation de la
+							fiche d'absences électronique
+						</h5>
+					</div>
+					<div class="modal-body">
+					  <p class="mb-0">Bonjour <b th:text="${user.firstName}"></b>,</p>
+					  <p>Voici quelques instructions pour utiliser le système de gestion des absences.</p>
+					
+						<ul class="list-group">
+							<li class="list-group-item"><strong><i class="fas fa-hand-point-right"></i> Ajouter une
+									nouvelle absence</strong> <br>Cliquez sur une date dans le calendrier,
+								puis remplissez les informations requises.</li>
+							<li class="list-group-item"><strong><i class="fas fa-hand-point-right"></i> Supprimer une
+									absence</strong> <br>Cliquez <b class="text-danger">deux fois</b> sur une absence dans le calendrier.<br>
+									Cliquez sur "Confirmer" pour supprimer définitivement l'absence.</li>
+							<li class="list-group-item"><strong><i class="fas fa-hand-point-right"></i> Afficher le
+									statut d'une absence</strong> <br>Cliquez <b class="text-danger">une fois</b> sur une absence pour afficher un message indiquant son statut (justifiée ou non).
+							</li>
+						</ul>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">Fermer</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
-	
-	
+
+
 </body>
 </html>

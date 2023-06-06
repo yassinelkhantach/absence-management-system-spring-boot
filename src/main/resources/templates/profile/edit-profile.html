@@ -34,9 +34,8 @@
 			<div class="col-md-12">
 				<div class="profile-header">
 					<div class="row align-items-center">
-						<div class="col-auto profile-image">
-							<img class="rounded-circle" alt="User Image"
-								th:src="@{/assets/img/profiles/unknown.png}">
+						<div id="imageContainer" class="col-auto profile-image">
+							<img id="uploadedImage" class="rounded-circle" alt="User Image" th:src="@{${user.picture} ? ${user.picture} : '/assets/img/profiles/unknown.png'}" >
 						</div>
 						<div class="col ms-md-n2 profile-user-info">
 							<h4 class="user-name mb-0"
@@ -51,6 +50,12 @@
 								<i class="fas fa-language"></i> <span
 									th:text="${user.firstNameAr+' '+user.lastNameAr}"></span>
 							</div>
+						</div>
+						<div class="col-auto profile-btn">
+							<form id="image-form" th:action="@{/profile/edit/photo}" method="POST" enctype="multipart/form-data">
+								<label for="imageUpload" class="btn btn-primary m-0"><i class="fas fa-camera"></i></label>
+							  	<input type="file" name="photo" id="imageUpload" hidden="true"/>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -150,10 +155,10 @@
 			<div class="col-md-12">
 				<div class="profile-header">
 					<div class="row align-items-center">
-						<div class="col-auto profile-image">
-							<img class="rounded-circle" alt="User Image"
-								th:src="@{/assets/img/profiles/unknown.png}">
+						<div id="imageContainer" class="col-auto profile-image">
+							<img id="uploadedImage" class="rounded-circle" alt="User Image" th:src="@{${user.picture} ? ${user.picture} : '/assets/img/profiles/unknown.png'}" >
 						</div>
+						
 						<div class="col ms-md-n2 profile-user-info">
 							<h4 class="user-name mb-0"
 								th:text="${user.firstName+' '+user.lastName}"></h4>
@@ -163,6 +168,12 @@
 								<i class="fas fa-language"></i> <span
 									th:text="${user.firstNameAr+' '+user.lastNameAr}"></span>
 							</div>
+						</div>
+						<div class="col-auto profile-btn">
+							<form id="image-form" th:action="@{/profile/edit/photo}" method="POST" enctype="multipart/form-data">
+								<label for="imageUpload" class="btn btn-primary m-0"><i class="fas fa-camera"></i></label>
+							  	<input type="file" name="photo" id="imageUpload" hidden="true"/>
+							</form>
 						</div>
 					</div>
 				</div>

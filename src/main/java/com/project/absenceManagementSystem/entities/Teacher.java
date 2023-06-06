@@ -23,8 +23,7 @@ public class Teacher extends User{
 	private List<Coordination> coordinations;
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "teacher")
 	private List<Element> elements;
-    
-	
+
     
 	
 	
@@ -84,6 +83,15 @@ public class Teacher extends User{
 	public void setElements(List<Element> elements) {
 		this.elements = elements;
 	}
+
+	
+	@Override
+	public String toString() {
+		return "Teacher [cin=" + cin + ", absences=" + absences + ", authorizationRequests=" + authorizationRequests
+				+ ", coordinations=" + coordinations + ", elements=" + elements + "]";
+	}
+
+	
 	
 	
 

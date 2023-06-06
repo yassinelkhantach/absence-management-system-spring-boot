@@ -36,11 +36,10 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col-md-12">
-					
 						<div class="student-profile-head mt-3">
-							<!--<div class="profile-bg-img">
+							<div class="profile-bg-img">
 								<img th:src="@{/assets/img/ensah.jpg}" height="280" class="object-fit-cover" alt="Profile">
-							</div>-->
+							</div>
 							<div class="row">
 								<div class="col-lg-4 col-md-4">
 									<div class="profile-user-box">
@@ -56,9 +55,15 @@
 									</div>
 								</div>
 								<div class="col"></div>
-								<div class="col-lg-3 col-md-4 d-flex align-items-center justify-content-center">
-									<i class="fas fa-calendar me-2"></i> Rejoint le <span class="ms-1" th:text="${#dates.format(student.createdAt, 'dd/MM/yyyy à HH:mm:ss')}"></span>
+								
+								<div class="col-lg-4 col-md-4 d-flex align-items-center justify-content-center">
+									<i class="fas fa-calendar me-2"></i> Rejoint le <span class="ms-1 me-4" th:text="${#dates.format(student.createdAt, 'dd/MM/yyyy à HH:mm:ss')}"></span>
+									<a th:href="@{/cadre-administrator/student/{id}/edit(id=${student.id})}">
+										<i class="fas fa-edit"></i> 
+									</a>
 								</div>
+								
+								
 							</div>
 						</div>
 					</div>
@@ -86,7 +91,16 @@
 										</div>
 										<div class="views-personal">
 											<h4>Filière</h4>
-											<h5>Génie Informatique</h5>
+											<h5 th:text="${student.registrations.get(0).level.filiere.label}"></h5>
+										</div>
+									</div>
+									<div class="personal-activity">
+										<div class="personal-icons">
+											<i class="feather-layers"></i>
+										</div>
+										<div class="views-personal">
+											<h4>Niveau</h4>
+											<h5 th:text="${student.registrations.get(0).level.alias}"></h5>
 										</div>
 									</div>
 									<div class="personal-activity">

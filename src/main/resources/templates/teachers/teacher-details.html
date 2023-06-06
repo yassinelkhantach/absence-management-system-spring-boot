@@ -38,11 +38,14 @@
 					<div class="col-md-12">
 					
 						<div class="student-profile-head mt-3">
+							<div class="profile-bg-img">
+								<img th:src="@{/assets/img/ensah.jpg}" height="280" class="object-fit-cover" alt="Profile">
+							</div>
 							<div class="row">
 								<div class="col-lg-4 col-md-4">
 									<div class="profile-user-box">
 										<div class="profile-user-img">
-											<img th:src="@{/assets/img/profiles/unknown.png}" id="user-img" alt="Profile">
+											<img th:src="@{${teacher.picture} ? ${teacher.picture} : '/assets/img/profiles/unknown.png'}" id="user-img" alt="Profile">
 											<div class="form-group students-up-files mb-0"></div>
 										</div>
 										<div class="names-profiles">
@@ -53,8 +56,11 @@
 									</div>
 								</div>
 								<div class="col"></div>
-								<div class="col-lg-3 col-md-4 d-flex align-items-center justify-content-center">
-									<i class="fas fa-calendar me-2"></i> Rejoint le <span class="ms-1" th:text="${#dates.format(teacher.createdAt, 'dd/MM/yyyy à HH:mm:ss')}"></span>
+								<div class="col-lg-4 col-md-4 d-flex align-items-center justify-content-center">
+									<i class="fas fa-calendar me-2"></i> Rejoint le <span class="ms-1 me-4" th:text="${#dates.format(teacher.createdAt, 'dd/MM/yyyy à HH:mm:ss')}"></span>
+									<a th:href="@{/cadre-administrator/teacher/{id}/edit(id=${teacher.id})}">
+										<i class="fas fa-edit"></i> 
+									</a>
 								</div>
 							</div>
 						</div>
@@ -83,7 +89,7 @@
 										</div>
 										<div class="views-personal">
 											<h4>Département</h4>
-											<h5>Mathématiques & Informatique</h5>
+											<h5>Mathématiques and Informatique</h5>
 										</div>
 									</div>
 									<div class="personal-activity">
@@ -151,10 +157,34 @@
 							<div class="card mb-0">
 								<div class="card-body">
 									<div class="heading-detail">
-										<h4><i class="fas fa-clipboard me-1"></i> Fiche d'absence</h4>
+										<h4><i class="fas fa-chalkboard-teacher me-1"></i> Modules & éléments enseignés</h4>
 									</div>
 									
-									<div id="calendar"></div>
+									<div class="skill-blk">
+										<div class="table-responsive">
+											<table
+												class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
+												<thead class="student-thread">
+													<tr>
+														<th>Code</th>
+														<th>Module</th>
+														<th>Element</th>
+														<th>Filière</th>
+														<th>Niveau</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="element : ${teacher.elements}">
+														<td th:text="${element.module.codeModule}"></td>
+														<td th:text="${element.module.label}"></td>
+														<td th:text="${element.label}"></td>
+														<td th:text="${element.module.level.filiere.label}"></td>
+														<td th:text="${element.module.level.alias}"></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
 						
 								</div>
 							</div>

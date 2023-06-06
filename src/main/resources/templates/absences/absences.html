@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function() {
 							</h3>
 						</div>
 						<div class="col-auto text-end float-end ms-auto download-grp">
-							<a th:href="@{/cadre-administrator/student/add}"
+							<a th:href="@{/cadre-administrator/teacher/add}"
 								class="btn btn-primary"><i class="fas fa-plus"></i> </a>
 						</div>
 					</div>
@@ -69,16 +69,16 @@ document.addEventListener("DOMContentLoaded", function() {
 							<tr>
 								<th>ID</th>
 								<th>Professeur</th>
-								<th>Matière</th>
+								<th>Email</th>
 								<th class="text-end">Fiche d'absences</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="teacher: ${teachers}">
+							<tr th:each="teacher: ${teachers}" th:class="(${teacherChoosen} != null and ${teacherChoosen.id} == ${teacher.id}) ? 'bg-light' : ''">
 								<td th:text="${teacher.id}"></td>
 								<td><a href="#"
 									th:text="${teacher.firstName+' '+teacher.lastName}"></a></td>
-								<td>Programmation Java</td>
+								<td th:text="${teacher.email}"></td>
 								<td class="text-end">
 									<div class="actions">
 										<a
@@ -158,9 +158,8 @@ document.addEventListener("DOMContentLoaded", function() {
 								</select>
 							</div>
 							<div class="form-group">
-								<label for="student" class="ms-1">Etudiant <span class="login-danger">*</span></label>
-								<select th:field="*{registration}" class="form-select" id="select-student-element">
-								  	<option value="0" selected >Choisir un étudiant</option>
+								<label for="student" class="ms-1">Etudiant(s) <span class="login-danger">*</span></label>
+								<select multiple="multiple" size="10" name="registrations" class="form-select" id="select-student-element">
 								    <optgroup th:each="element : ${teacherChoosen.elements}" th:value="${element.id}" th:label="${element.label}">
 					                    <option th:each="registration : ${element.module.level.registrations}" 
 					                    	    th:value="${registration.id}" th:text="${registration.student.getFullName()}">
@@ -169,7 +168,6 @@ document.addEventListener("DOMContentLoaded", function() {
 								</select>
 								<input type="hidden" id="selectedOptgroup" th:field="*{element}" />
 								<input type="hidden" id="startDate" name="startDate" th:field="*{startString}">
-								
 							</div>
 							<div class="form-group">
 								<label for="teacher" class="ms-1">Séance <span class="login-danger">*</span></label>
@@ -184,6 +182,41 @@ document.addEventListener("DOMContentLoaded", function() {
 						<button type="button" class="btn btn-secondary"
 							data-dismiss="modal" onclick="$('#myModal').modal('hide');">Annuler</button>
 						<button type="submit" form="absence-form" class="btn btn-primary">Enregistrer</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal fade" id="manual-guide" tabindex="-1" role="dialog"
+			aria-hidden="false">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header text-center">
+						<h5 class="modal-title">
+							<i class="fas fa-flag-checkered"></i> Guide d'utilisation de la
+							fiche d'absences électronique
+						</h5>
+					</div>
+					<div class="modal-body">
+					  <p class="mb-0">Bonjour <b th:text="${user.firstName}"></b>,</p>
+					  <p>Voici quelques instructions pour utiliser le système de gestion des absences.</p>
+					
+						<ul class="list-group">
+							<li class="list-group-item"><strong><i class="fas fa-hand-point-right"></i> Ajouter une
+									nouvelle absence</strong> <br>Cliquez sur une date dans le calendrier,
+								puis remplissez les informations requises.</li>
+							<li class="list-group-item"><strong><i class="fas fa-hand-point-right"></i> Supprimer une
+									absence</strong> <br>Cliquez <b class="text-danger">deux fois</b> sur une absence dans le calendrier.<br>
+									Cliquez sur "Confirmer" pour supprimer définitivement l'absence.</li>
+							<li class="list-group-item"><strong><i class="fas fa-hand-point-right"></i> Afficher le
+									statut d'une absence</strong> <br>Cliquez <b class="text-danger">une fois</b> sur une absence pour afficher un message indiquant son statut (justifiée ou non).
+							</li>
+						</ul>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">Fermer</button>
 					</div>
 				</div>
 			</div>
